@@ -2,15 +2,12 @@ package main.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @TableName("tb_label")
-@AllArgsConstructor
-public class Label {
+public class Label extends Model<Label> {
 
     @TableField("id")
     private String id;//

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import util.IdUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BaseApplication.class)
@@ -17,12 +18,13 @@ public class TestMyBatis {
 
 
     @Test
-    public void insert() {
-        Observable.range(1,10).observeOn(Schedulers.single()).forEach(e->{
-            //
-            Label label = new Label(e+"","t"+e,"0",e,e,"0");
-
+    public void insert() throws InterruptedException {
+        Observable.range(1,1000).observeOn(Schedulers.single()).forEach(e->{
+            Long id = IdUtil.getId();
+            Label label = new Label(id+"","t"+e,"0",e+1,e+2,"0");
+            label.insert();
         });
+        Thread.sleep(5000L);
     }
 
 }

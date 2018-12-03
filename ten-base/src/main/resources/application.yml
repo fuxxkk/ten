@@ -3,8 +3,17 @@ server:
 spring:
   application:
     name: ten-base
+#  datasource:
+#    druid:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/ten?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: 1234
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ten?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 1234
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/ten?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 1234
+mybatis-plus:
+  mapper-locations: classpath*:main/mapper/mapping/*.xml
