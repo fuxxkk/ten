@@ -1,0 +1,10 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: ten-base
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ten?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 1234
