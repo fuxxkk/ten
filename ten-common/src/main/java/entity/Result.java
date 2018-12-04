@@ -4,8 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class Result {
+
+    public Result(boolean flag, Integer code, String message, Object data) {
+        this.flag = flag;
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
 
     private boolean flag;
 

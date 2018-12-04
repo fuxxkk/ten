@@ -16,7 +16,7 @@ spring:
       username: root
       password: 1234
 mybatis-plus:
-  mapper-locations: classpath*:main/mapper/mapping/*.xml
+  mapper-locations: classpath*:com/mapper/mapping/*.xml
 #springfox:
 #  documentation:
 #    swagger:

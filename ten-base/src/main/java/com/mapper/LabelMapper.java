@@ -1,7 +1,7 @@
-package main.mapper;
+package com.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import main.entity.Label;
+import com.entity.Label;
 import org.springframework.stereotype.Component;
 
 @Component

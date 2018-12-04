@@ -2,11 +2,10 @@ package base.test;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
-import main.BaseApplication;
-import main.entity.Label;
-import main.mapper.LabelMapper;
+import com.BaseApplication;
+import com.entity.Label;
+import com.mapper.LabelMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
