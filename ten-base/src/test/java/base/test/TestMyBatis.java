@@ -34,7 +34,7 @@ public class TestMyBatis {
     @Test
     public void select() {
         QueryWrapper<Label> wrapper = new QueryWrapper<>();
-        wrapper.eq("id", "1");
+        wrapper.eq("id", "519448318703566848");
         Label label = labelMapper.selectOne(wrapper);
         System.out.println(label);
     }
