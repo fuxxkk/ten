@@ -43,11 +43,11 @@ public class LogAspect {
         log.info("================total time : {}",System.currentTimeMillis()-startTime.get()+"ms ===============");
     }
 
-    @Around(value = "recordlog()")
+    /*@Around(value = "recordlog()")
     public Result aroundController(ProceedingJoinPoint joinPoint) throws Throwable {
 
         Object proceed = joinPoint.proceed();
         Result result = new Result(true, StatusCode.OK, "success!", proceed);
         return result;
-    }
+    }*/
 }

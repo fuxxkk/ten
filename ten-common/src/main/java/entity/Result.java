@@ -20,4 +20,11 @@ public class Result {
     private String message;
 
     private Object data;  //返回数据
+
+    public final static Result SUCCESS(Object data) {
+        return new Result(true, StatusCode.OK, StatusMsg.OK, data);
+    }
+    public final static Result ERROR(Object data) {
+        return new Result(false, StatusCode.ERROR, StatusMsg.ERROR, data);
+    }
 }

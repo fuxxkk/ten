@@ -3,6 +3,7 @@ package com.controller;
 import com.entity.Label;
 import com.entity.request.LabelPageRequest;
 import com.service.LabelService;
+import entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,7 @@ public class LableController {
     private LabelService labelService;
 
     @PostMapping("findPage")
-    public List<Label> findPage(@RequestBody LabelPageRequest labelPageRequest) {
-        return labelService.findPage(labelPageRequest);
+    public Result findPage(@RequestBody LabelPageRequest labelPageRequest) {
+        return Result.SUCCESS(labelService.findPage(labelPageRequest));
     }
 }
