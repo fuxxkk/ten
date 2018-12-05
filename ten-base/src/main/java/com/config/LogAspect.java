@@ -1,8 +1,11 @@
 package com.config;
 
+import entity.Result;
+import entity.StatusCode;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.Joinpoint;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
@@ -38,5 +41,13 @@ public class LogAspect {
     @After(value = "recordlog()")
     public void doAfter() {
         log.info("================total time : {}",System.currentTimeMillis()-startTime.get()+"ms ===============");
+    }
+
+    @Around(value = "recordlog()")
+    public Result aroundController(ProceedingJoinPoint joinPoint) throws Throwable {
+
+        Object proceed = joinPoint.proceed();
+        Result result = new Result(true, StatusCode.OK, "success!", proceed);
+        return result;
     }
 }
