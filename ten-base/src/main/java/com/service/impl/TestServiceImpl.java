@@ -7,7 +7,7 @@ import com.service.TestService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestServiceImpl extends BaseServiceImpl<LabelMapper> implements TestService {
+public class TestServiceImpl extends BaseServiceImpl<Label,LabelMapper> implements TestService {
 
     @Override
     public Label findOne(String id) {

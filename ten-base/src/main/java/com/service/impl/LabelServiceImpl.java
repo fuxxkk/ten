@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LabelServiceImpl extends BaseServiceImpl<LabelMapper> implements LabelService {
+public class LabelServiceImpl extends BaseServiceImpl<Label,LabelMapper> implements LabelService {
 
 
     @Override
