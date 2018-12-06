@@ -8,12 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ten-base" />
         <module name="ten-common" />
+        <module name="ten-recruit" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="ten-base" target="1.8" />
       <module name="ten-common" target="1.8" />
       <module name="ten-parent" target="1.8" />
+      <module name="ten-recruit" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -21,6 +23,7 @@
       <module name="ten-base" options="-parameters" />
       <module name="ten-common" options="-parameters" />
       <module name="ten-parent" options="-parameters" />
+      <module name="ten-recruit" options="-parameters" />
     </option>
   </component>
 </project>
