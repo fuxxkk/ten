@@ -11,6 +11,7 @@
     <modules>
         <module>../ten-common</module>
         <module>../ten-base</module>
+        <module>../ten-qa</module>
     </modules>
 
     <parent>
