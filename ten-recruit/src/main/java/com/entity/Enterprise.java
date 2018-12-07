@@ -35,7 +35,22 @@ public class Enterprise {
     @TableField("jobcount")
     private Integer jobcount;
 
-    @TableField("id")
+    @TableField("url")
     private String url;
 
+    public Enterprise(String id, String name, String summary, String address, String labels, String coordinate, String ishot, String logo, Integer jobcount, String url) {
+        this.id = id;
+        this.name = name;
+        this.summary = summary;
+        this.address = address;
+        this.labels = labels;
+        this.coordinate = coordinate;
+        this.ishot = ishot;
+        this.logo = logo;
+        this.jobcount = jobcount;
+        this.url = url;
+    }
+
+    public Enterprise() {
+    }
 }

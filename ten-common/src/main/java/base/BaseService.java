@@ -1,6 +1,7 @@
 package base;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface BaseService<T> {
 
@@ -11,4 +12,6 @@ public interface BaseService<T> {
     Boolean delete(String id);
 
     T selectOne(Serializable id);
+
+    List<T> findAll();
 }

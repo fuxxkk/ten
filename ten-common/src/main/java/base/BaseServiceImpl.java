@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class BaseServiceImpl<T, M extends BaseMapper<T>> implements BaseService<T> {
     @Autowired
@@ -30,5 +31,10 @@ public class BaseServiceImpl<T, M extends BaseMapper<T>> implements BaseService<
     @Override
     public T selectOne(Serializable id) {
         return mapper.selectById(id);
+    }
+
+    @Override
+    public List<T> findAll() {
+        return mapper.selectList(null);
     }
 }

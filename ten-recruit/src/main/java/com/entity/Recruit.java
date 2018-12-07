@@ -19,7 +19,7 @@ public class Recruit {
     @TableField("salary")
     private String salary;
 
-    @TableField("condition")
+    @TableField("`condition`")
     private String condition;
 
     @TableField("education")
@@ -51,4 +51,25 @@ public class Recruit {
 
     @TableField("content2")
     private String content2;
+
+    public Recruit(String id, String jobname, String salary, String condition, String education, String type,
+                   String address, String eid, Date createtime, String state, String url, String label, String content1, String content2) {
+        this.id = id;
+        this.jobname = jobname;
+        this.salary = salary;
+        this.condition = condition;
+        this.education = education;
+        this.type = type;
+        this.address = address;
+        this.eid = eid;
+        this.createtime = createtime;
+        this.state = state;
+        this.url = url;
+        this.label = label;
+        this.content1 = content1;
+        this.content2 = content2;
+    }
+
+    public Recruit() {
+    }
 }
