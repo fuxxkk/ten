@@ -1,5 +1,7 @@
 package base;
 
+import java.io.Serializable;
+
 public interface BaseService<T> {
 
     Boolean save(T t);
@@ -8,5 +10,5 @@ public interface BaseService<T> {
 
     Boolean delete(String id);
 
-    T selectOne(String id);
+    T selectOne(Serializable id);
 }

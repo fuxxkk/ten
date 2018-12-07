@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Serializable;
+
 public class BaseServiceImpl<T, M extends BaseMapper<T>> implements BaseService<T> {
     @Autowired
     protected M mapper;
@@ -26,7 +28,7 @@ public class BaseServiceImpl<T, M extends BaseMapper<T>> implements BaseService<
     }
 
     @Override
-    public T selectOne(String id) {
+    public T selectOne(Serializable id) {
         return mapper.selectById(id);
     }
 }
