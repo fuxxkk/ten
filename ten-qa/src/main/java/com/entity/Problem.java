@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @TableName("tb_problem")
 public class Problem {
@@ -18,10 +20,10 @@ public class Problem {
     private String content;
 
     @TableField("createtime")
-    private String createtime;
+    private Date createtime;
 
     @TableField("updatetime")
-    private String updatetime;
+    private Date updatetime;
 
     @TableField("userid")
     private String userid;
@@ -30,10 +32,10 @@ public class Problem {
     private String nickname;
 
     @TableField("visits")
-    private String visits;
+    private Integer visits;
 
     @TableField("thumbup")
-    private String reply;
+    private Integer reply;
 
     @TableField("solve")
     private String solve;
@@ -42,5 +44,21 @@ public class Problem {
     private String replyname;
 
     @TableField("replytime")
-    private String replytime;
+    private Date replytime;
+
+    public Problem(String id, String title, String content, Date createtime, Date updatetime, String userid,
+                   String nickname, Integer visits, Integer reply, String solve, String replyname, Date replytime) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.createtime = createtime;
+        this.updatetime = updatetime;
+        this.userid = userid;
+        this.nickname = nickname;
+        this.visits = visits;
+        this.reply = reply;
+        this.solve = solve;
+        this.replyname = replyname;
+        this.replytime = replytime;
+    }
 }
