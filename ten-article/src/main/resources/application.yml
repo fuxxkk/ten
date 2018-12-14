@@ -1,0 +1,24 @@
+server:
+  port: 9004
+spring:
+  application:
+    name: ten-article
+#  datasource:
+#    druid:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/ten?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: 1234
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/ten?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 1234
+mybatis-plus:
+  mapper-locations: classpath*:com/mapper/mapping/*.xml
+#springfox:
+#  documentation:
+#    swagger:
+#      v2:
+#        path: /api-docs
