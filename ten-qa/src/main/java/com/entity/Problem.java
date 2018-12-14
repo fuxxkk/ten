@@ -61,4 +61,7 @@ public class Problem {
         this.replyname = replyname;
         this.replytime = replytime;
     }
+
+    public Problem() {
+    }
 }

@@ -2,8 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mapper.ProblemMapper">
     <select id="findByLableId" parameterType="string" resultType="com.entity.Problem">
-        select * from tb_problem p inner join tb_pl pl on p.id = pl.problemid
-                      inner join tb_label l on pl.labelid = l.id
+        select * from tb_problem p
+          inner join tb_pl pl on p.id = pl.problemid
+          inner join tb_label l on pl.labelid = l.id
           where l.id = #{labelId}
+          order by p.replytime desc
+    </select>
+
+
+    <select id="findHotProblem" parameterType="com.entity.request.ProblemPageRequest" resultType="com.entity.Problem">
+        select * from tb_problem p
+                          inner join tb_pl pl on p.id = pl.problemid
+                          inner join tb_label l on pl.labelid = l.id
+        where l.id = #{problemRequest.labelId}
+        order by p.reply desc limit #{problemRequest.page},#{problemRequest.pageSize}
     </select>
 </mapper>
