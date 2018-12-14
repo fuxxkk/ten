@@ -29,4 +29,13 @@ public class ProblemServiceImpl extends BaseServiceImpl<Problem, ProblemMapper> 
         result.setTotal(total.longValue());
         return result;
     }
+
+    @Override
+    public PageResult<Problem> findWaitProblemByLabelId(ProblemPageRequest problemPageRequest) {
+        problemPageRequest.setPage(problemPageRequest.getPage()-1);
+        List<Problem> problemList = mapper.findWaitProblemByLabelId(problemPageRequest);
+        Integer total = mapper.selectCount(null);
+        PageResult<Problem> result = new PageResult<Problem>(total.longValue(),problemList);
+        return result;
+    }
 }

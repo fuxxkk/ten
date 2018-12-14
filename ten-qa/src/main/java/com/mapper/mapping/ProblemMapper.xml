@@ -17,4 +17,12 @@
         where l.id = #{problemRequest.labelId}
         order by p.reply desc limit #{problemRequest.page},#{problemRequest.pageSize}
     </select>
+
+    <select id="findWaitProblemByLabelId" parameterType="com.entity.request.ProblemPageRequest" resultType="com.entity.Problem">
+        select * from tb_problem p
+                          inner join tb_pl pl on p.id = pl.problemid
+                          inner join tb_label l on pl.labelid = l.id
+        where l.id = #{problemRequest.labelId} and p.reply=0
+        order by p.reply desc limit #{problemRequest.page},#{problemRequest.pageSize}
+    </select>
 </mapper>

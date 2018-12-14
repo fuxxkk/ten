@@ -23,4 +23,9 @@ public class ProblemController {
     public PageResult findHotProblemByLableId(@RequestBody ProblemPageRequest problemPageRequest) {
         return problemService.findHotProblem(problemPageRequest);
     }
+
+    @PostMapping("findWaitProblemByLabelId")
+    public PageResult findWaitProblemByLabelId(@RequestBody ProblemPageRequest problemPageRequest) {
+        return problemService.findWaitProblemByLabelId(problemPageRequest);
+    }
 }

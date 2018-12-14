@@ -14,4 +14,6 @@ public interface ProblemMapper extends BaseMapper<Problem> {
     List<Problem> findByLableId(@Param("labelId") String labelId);
 
     List<Problem> findHotProblem(@Param("problemRequest") ProblemPageRequest problemRequest);
+
+    List<Problem> findWaitProblemByLabelId(@Param("problemRequest") ProblemPageRequest problemRequest);
 }

@@ -21,4 +21,9 @@ public interface ProblemService extends BaseService<Problem> {
      * 根据标签ID查询热门问题列表
      */
     PageResult<Problem> findHotProblem(ProblemPageRequest problemPageRequest);
+
+    /**
+     * 根据标签ID查询等待回答列表
+     */
+    PageResult<Problem> findWaitProblemByLabelId(ProblemPageRequest problemPageRequest);
 }
