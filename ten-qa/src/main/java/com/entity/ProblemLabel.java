@@ -16,4 +16,13 @@ public class ProblemLabel {
 
     @TableField("labelid")
     private String labelId;
+
+    public ProblemLabel(String id, String problemId, String labelId) {
+        this.id = id;
+        this.problemId = problemId;
+        this.labelId = labelId;
+    }
+
+    public ProblemLabel() {
+    }
 }

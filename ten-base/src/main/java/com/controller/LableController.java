@@ -5,10 +5,7 @@ import com.entity.request.LabelPageRequest;
 import com.service.LabelService;
 import entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,4 +20,10 @@ public class LableController {
     public Result findPage(@RequestBody LabelPageRequest labelPageRequest) {
         return Result.SUCCESS(labelService.findPage(labelPageRequest));
     }
+
+    @GetMapping("findAll")
+    public Result findAll() {
+        return Result.SUCCESS(labelService.findAll());
+    }
+
 }
