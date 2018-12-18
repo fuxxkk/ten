@@ -17,4 +17,11 @@ public interface ArticleService extends BaseService<Article> {
      * @return
      */
     Integer updateThumbup(String id);
+
+    /**
+     * 根据ID查询实体(使用redis缓存）
+     * @param id
+     * @return
+     */
+    Article findByIdCache(String id);
 }

@@ -4,11 +4,16 @@ import base.BaseServiceImpl;
 import com.entity.Article;
 import com.mapper.ArticleMapper;
 import com.service.ArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ArticleServiceImpl extends BaseServiceImpl<Article, ArticleMapper> implements ArticleService {
+
+    @Autowired
+    private RedisTemplate redisTemplate ;
 
     @Override
     public Boolean examine(String id) {
@@ -24,5 +29,10 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article, ArticleMapper> 
         article.setThumbup(article.getThumbup()+1);
         update(article);
         return article.getThumbup();
+    }
+
+    @Override
+    public Article findByIdCache(String id) {
+        return null;
     }
 }
