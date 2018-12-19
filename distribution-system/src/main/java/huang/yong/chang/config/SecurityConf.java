@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 /**
  * spring security配置类
@@ -31,22 +32,33 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(loginUserService());
+        auth.userDetailsService(loginUserService()).passwordEncoder(passwordEncoder());
     }
+
+    @Bean
+    public static NoOpPasswordEncoder passwordEncoder() {
+        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/").permitAll().anyRequest().authenticated()
+       /* http.authorizeRequests().antMatchers("/").permitAll().anyRequest().authenticated()
                 .and()
                 .logout().permitAll()
                 .and()
                 .formLogin()
                 .and()
-                .csrf().disable();
+                .csrf().disable();*/
+        http.formLogin()                 //  定义当需要用户登录时候，转到的登录页面。
+                .and()
+                .authorizeRequests()        // 定义哪些URL需要被保护、哪些不需要被保护
+                .anyRequest()               // 任何请求,登录后可以访问
+                .authenticated();
     }
 
-    @Override
+   /* @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().mvcMatchers("/swagger-ui.html/**","/login");
-    }
+    }*/
 }
