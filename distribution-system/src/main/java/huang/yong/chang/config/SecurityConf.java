@@ -50,7 +50,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .and()
                 .csrf().disable();*/
-        http.formLogin()                 //  定义当需要用户登录时候，转到的登录页面。
+        http.formLogin().loginProcessingUrl("/swagger-ui.html")         //  定义当需要用户登录时候，转到的登录页面。
                 .and()
                 .authorizeRequests()        // 定义哪些URL需要被保护、哪些不需要被保护
                 .anyRequest()               // 任何请求,登录后可以访问
