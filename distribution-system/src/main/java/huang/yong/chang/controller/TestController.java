@@ -5,6 +5,7 @@ import huang.yong.chang.base.Result;
 import huang.yong.chang.util.QrCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 @RestController
 public class TestController {
 
+
     @GetMapping("hello")
     public Result hello(String arg) throws Exception {
         return Result.SUCCESS("hello:"+arg);
@@ -25,4 +27,9 @@ public class TestController {
     public void testQr(HttpServletRequest request, HttpServletResponse response) throws IOException, WriterException {
         QrCodeUtils.createQrCode(response.getOutputStream(), "abcd", 510, "jpeg");
     }
+
+    /*@PostMapping("login")
+    public Result login(String username) {
+
+    }*/
 }
