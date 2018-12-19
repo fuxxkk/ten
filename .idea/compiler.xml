@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="distribution-system" />
         <module name="ten-article" />
         <module name="ten-base" />
         <module name="ten-common" />
@@ -14,6 +15,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="distribution-system" target="1.8" />
       <module name="ten-article" target="1.8" />
       <module name="ten-base" target="1.8" />
       <module name="ten-common" target="1.8" />
@@ -24,6 +26,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="distribution-system" options="-parameters" />
       <module name="ten-article" options="-parameters" />
       <module name="ten-base" options="-parameters" />
       <module name="ten-common" options="-parameters" />

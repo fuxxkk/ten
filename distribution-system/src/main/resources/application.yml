@@ -1,0 +1,29 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: distribution-system
+#  datasource:
+#    druid:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/ten?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: 1234
+
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/distribution_system?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 1234
+  redis:
+    host: localhost
+    port: 6379
+
+#mybatis-plus:
+#  mapper-locations: classpath*:com/mapper/mapping/*.xml
+#springfox:
+#  documentation:
+#    swagger:
+#      v2:
+#        path: /api-docs
