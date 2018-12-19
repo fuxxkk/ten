@@ -2,6 +2,7 @@ package huang.yong.chang.controller;
 
 import com.google.zxing.WriterException;
 import huang.yong.chang.base.Result;
+import huang.yong.chang.util.ContextUtils;
 import huang.yong.chang.util.QrCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,4 +33,8 @@ public class TestController {
     public Result login(String username) {
 
     }*/
+    @GetMapping("user")
+    public Result getUser() {
+        return Result.SUCCESS(ContextUtils.getUser());
+    }
 }

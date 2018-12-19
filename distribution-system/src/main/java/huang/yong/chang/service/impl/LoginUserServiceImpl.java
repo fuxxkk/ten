@@ -20,7 +20,9 @@ public class LoginUserServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByUsername(username);
         Optional.of(user).orElseThrow(() -> new UsernameNotFoundException("用户密码错误"));
-        System.out.println("用户已登录："+user);
+        System.out.println("用户信息："+user);
         return user;
     }
+
+
 }
