@@ -21,6 +21,9 @@ public class TestSystem {
     @Test
     public void test() {
         List<User> users = userService.findAll();
+        users.stream().forEach(user -> {
+            System.out.println(user.getId());
+        });
         System.out.println(users);
     }
 }

@@ -2,12 +2,14 @@ package huang.yong.chang.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import huang.yong.chang.base.BaseEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,10 +18,8 @@ import java.util.stream.Stream;
 
 @TableName("tb_user")
 @Data
-public class User implements UserDetails {
+public class User extends BaseEntity<User> implements UserDetails, Serializable {
 
-    @TableField("id")
-    private Long id;
 
     @TableField("username")
     private String username;
@@ -49,14 +49,6 @@ public class User implements UserDetails {
     @TableField("uesr_level")
     private Integer uesrLevel;
 
-    @TableField("backup1")
-    private String backup1;
-
-    @TableField("backup2")
-    private String backup2;
-
-    @TableField("backup3")
-    private String backup3;
 
     @TableField(exist = false)
     private List<Role> roles;
