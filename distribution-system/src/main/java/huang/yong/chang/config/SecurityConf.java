@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -37,6 +38,12 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         return new LoginUserServiceImpl();
     }
 
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        return new MyAuthenticationProvider();
+    }
+
     /**
      * 自定义校验规则
      *
@@ -45,12 +52,12 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(loginUserService()).passwordEncoder(new PasswordEncoder() {
-            /**
+/*        auth.userDetailsService(loginUserService()).passwordEncoder(new PasswordEncoder() {
+            *//**
              * md5加密校对
              * @param charSequence
              * @return
-             */
+             *//*
             @Override
             public String encode(CharSequence charSequence) {
                 return MD5Util.encode((String) charSequence);
@@ -60,7 +67,9 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
             public boolean matches(CharSequence charSequence, String encodedPassword) {
                 return encodedPassword.equals(MD5Util.encode((String) charSequence));
             }
-        });
+        });*/
+
+        auth.authenticationProvider(authenticationProvider());
     }
 
    /* @Bean
@@ -85,7 +94,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
 
-        http.authorizeRequests().and().rememberMe().rememberMeServices(rememberMeServices()).key("INTERNAL_SECRET_KEY");
+        http.authorizeRequests().and().rememberMe().tokenValiditySeconds(10).rememberMeServices(rememberMeServices()).key("INTERNAL_SECRET_KEY");
     }
 
    /* @Override
