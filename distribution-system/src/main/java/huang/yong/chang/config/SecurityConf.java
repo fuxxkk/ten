@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
@@ -32,6 +33,9 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("dataSource")
     private DataSource dataSource;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
 
     @Bean
     public UserDetailsService loginUserService() {
@@ -88,7 +92,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();*/
         http.formLogin()//.loginPage("http://www.baidu.com")
-                .defaultSuccessUrl("/swagger-ui.html",true)      //  定义当需要用户登录时候，转到的登录页面。
+                .defaultSuccessUrl("/swagger-ui.html",true).failureHandler(authenticationFailureHandler)      //  定义当需要用户登录时候，转到的登录页面。
                 .and()
                 .authorizeRequests()        // 定义哪些URL需要被保护、哪些不需要被保护
                 .anyRequest().authenticated()             // 任何请求,登录后可以访问
