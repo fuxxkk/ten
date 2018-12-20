@@ -3,6 +3,7 @@ package huang.yong.chang.config;
 import huang.yong.chang.entity.User;
 import huang.yong.chang.service.UserService;
 import huang.yong.chang.util.MD5Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.DisabledException;
@@ -12,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
@@ -24,9 +26,10 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
         User user = userService.findByUsername(inputName);
         if (user==null||!user.getPassword().equals(MD5Util.encode(inputPwd))) {
+            log.info("用户：{} ，{}尝试登陆，账号密码错误。",inputName,MD5Util.encode(inputPwd));
             throw new DisabledException("账号密码错误");
         }
-
+        log.info("用户：{} 登陆成功",user);
         return new UsernamePasswordAuthenticationToken(user,inputPwd,user.getAuthorities());
     }
 
