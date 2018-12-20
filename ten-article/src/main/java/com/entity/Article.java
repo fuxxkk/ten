@@ -4,11 +4,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @TableName("tb_article")
-public class Article {
+public class Article implements Serializable {
     public Article(String id, String columnid, String userid, String title, String content, String image, Date createtime, Date updatetime, Integer ispublic, Integer istop,
                    Integer visits, Integer thumbup, Integer comment, Integer state, String channelid, String url, String type) {
         this.id = id;

@@ -23,4 +23,9 @@ public class ArticleController {
     public Result updateThumbup(String id){
         return Result.SUCCESS(articleService.updateThumbup(id));
     }
+
+    @GetMapping("findById")
+    public Result findByIdCache(String id){
+        return Result.SUCCESS(articleService.findByIdCache(id));
+    }
 }
