@@ -3,6 +3,7 @@ package huang.yong.chang.controller;
 import huang.yong.chang.base.Result;
 import huang.yong.chang.entity.Role;
 import huang.yong.chang.entity.User;
+import huang.yong.chang.entity.request.UserPageRequest;
 import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.service.UserService;
 import io.swagger.annotations.Api;
@@ -34,5 +35,11 @@ public class UserController {
     @ApiOperation(value = "删除用户")
     public Result delete(Long id) {
         return Result.SUCCESS(userService.deleteUser(id));
+    }
+
+    @PostMapping("findPage")
+    @ApiOperation(value = "分页查询")
+    public Result findPage(@RequestBody UserPageRequest userPageRequest) throws SystemException {
+        return Result.SUCCESS(userService.findPage(userPageRequest));
     }
 }

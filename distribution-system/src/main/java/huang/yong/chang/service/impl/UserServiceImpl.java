@@ -1,17 +1,15 @@
 package huang.yong.chang.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import huang.yong.chang.base.BaseServiceImpl;
-import huang.yong.chang.entity.Role;
-import huang.yong.chang.entity.User;
-import huang.yong.chang.entity.UserRole;
+import huang.yong.chang.entity.*;
 import huang.yong.chang.entity.request.UserPageRequest;
 import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.mapper.UserMapper;
-import huang.yong.chang.service.RoleService;
-import huang.yong.chang.service.UserRoleService;
-import huang.yong.chang.service.UserService;
+import huang.yong.chang.service.*;
 import huang.yong.chang.util.IdUtil;
 import huang.yong.chang.util.MD5Util;
 import io.reactivex.Observable;
@@ -32,6 +30,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private IntegralService integralService;
+    @Autowired
+    private BalanceService balanceService;
 
     @Override
     public User findByUsername(String username) {
@@ -71,6 +73,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
             userRoleService.save(new UserRole(user.getId(), role.getId()));
         });
 
+        balanceService.save(new Balance(user.getId(), 0, new Date()));
+        integralService.save(new Integral(user.getId(), 0, new Date()));
+
         return mapper.insert(user) > 0 ? true : false;
     }
 
@@ -93,7 +98,13 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
 
     @Override
     public List<User> findPage(UserPageRequest userPageRequest) {
-        return null;
+        /*Page<User> userPage = new Page<>(userPageRequest.getPage() - 1, userPageRequest.getPageSize());
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        if (Stringu) {
+        }*/
+        userPageRequest.setPage(userPageRequest.getPage()-1);
+        List<User> users = mapper.findPage(userPageRequest);
+        return users;
     }
 
 }

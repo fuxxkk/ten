@@ -11,6 +11,15 @@ import java.util.Date;
 @TableName("tb_integral")
 public class Integral extends BaseEntity<Integral> {
 
+    public Integral(Long userId, Integer integral, Date modifyDate) {
+        this.userId = userId;
+        this.integral = integral;
+        this.modifyDate = modifyDate;
+    }
+
+    public Integral() {
+    }
+
     @TableField("user_id")
     private Long userId;
 
