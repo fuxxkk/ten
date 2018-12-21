@@ -2,18 +2,16 @@ package huang.yong.chang.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import huang.yong.chang.base.BaseEntity;
 import lombok.Data;
 
 /**
  * 用户消息表
  */
-@TableName("tb_msg")
+@TableName("tb_user_msg")
 @Data
-public class UserMsg {
+public class UserMsg  extends BaseEntity<UserMsg> {
 
-
-    @TableField("id")
-    private Long id;
 
     @TableField("user_id")
     private Long userId;
@@ -30,12 +28,4 @@ public class UserMsg {
     @TableField("read_date")
     private Long readDate;
 
-    @TableField("backup1")
-    private String backup1;
-
-    @TableField("backup2")
-    private String backup2;
-
-    @TableField("backup3")
-    private String backup3;
 }

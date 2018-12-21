@@ -7,22 +7,17 @@ import lombok.Data;
 
 import java.util.Date;
 
-/**
- * 积分变动记录表
- */
 @Data
-@TableName("tb_integral_record")
-public class IntegralRecord extends BaseEntity<IntegralRecord> {
-
+@TableName("tb_integral")
+public class Integral extends BaseEntity<Integral> {
 
     @TableField("user_id")
     private Long userId;
 
-    //变动积分
-    @TableField("change_integral")
-    private Integer changeIntegral;
+    //剩余积分
+    @TableField("integral")
+    private Integer integral;
 
     @TableField("modify_date")
-    private Date modify_date;
-
+    private Date modifyDate;
 }

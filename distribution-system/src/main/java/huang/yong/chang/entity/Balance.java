@@ -8,21 +8,20 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 积分变动记录表
+ * 用户余额表
  */
 @Data
-@TableName("tb_integral_record")
-public class IntegralRecord extends BaseEntity<IntegralRecord> {
-
+@TableName("tb_balance")
+public class Balance extends BaseEntity<Balance> {
 
     @TableField("user_id")
     private Long userId;
 
-    //变动积分
-    @TableField("change_integral")
-    private Integer changeIntegral;
+    //余额
+    @TableField("balance")
+    private Integer balance;
 
     @TableField("modify_date")
-    private Date modify_date;
+    private Date modifyDate;
 
 }

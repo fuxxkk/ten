@@ -2,6 +2,7 @@ package huang.yong.chang.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import huang.yong.chang.base.BaseEntity;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,10 +12,7 @@ import java.util.Date;
  */
 @Data
 @TableName("tb_recharge")
-public class Recharge {
-
-    @TableField("id")
-    private Long id;
+public class Recharge extends BaseEntity<Recharge> {
 
     @TableField("user_id")
     private Long userId;
@@ -27,12 +25,4 @@ public class Recharge {
     @TableField("recharge_date")
     private Date rechargeDate;
 
-    @TableField("backup1")
-    private String backup1;
-
-    @TableField("backup2")
-    private String backup2;
-
-    @TableField("backup3")
-    private String backup3;
 }
