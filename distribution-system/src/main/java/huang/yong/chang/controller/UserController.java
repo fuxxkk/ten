@@ -33,6 +33,6 @@ public class UserController {
     @GetMapping("delete")
     @ApiOperation(value = "删除用户")
     public Result delete(Long id) {
-        return Result.SUCCESS(userService.delete(id));
+        return Result.SUCCESS(userService.deleteUser(id));
     }
 }

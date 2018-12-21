@@ -1,5 +1,6 @@
 package huang.yong.chang.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.entity.Role;
 import huang.yong.chang.mapper.RoleMapper;
@@ -26,5 +27,12 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleMapper> implement
     @Override
     public List<Role> findByUserId(Long userId) {
         return mapper.findByUserId(userId);
+    }
+
+    @Override
+    public Role findByName(String roleName) {
+        QueryWrapper<Role> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_name", roleName);
+        return mapper.selectOne(wrapper);
     }
 }

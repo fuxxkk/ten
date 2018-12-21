@@ -1,12 +1,15 @@
 package huang.yong.chang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.entity.Role;
 import huang.yong.chang.entity.User;
 import huang.yong.chang.entity.UserRole;
+import huang.yong.chang.entity.request.UserPageRequest;
 import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.mapper.UserMapper;
+import huang.yong.chang.service.RoleService;
 import huang.yong.chang.service.UserRoleService;
 import huang.yong.chang.service.UserService;
 import huang.yong.chang.util.IdUtil;
@@ -16,6 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
 
     @Autowired
     private UserRoleService userRoleService;
+
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public User findByUsername(String username) {
@@ -54,9 +61,16 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         user.setId(IdUtil.getId());
         //保存中间表
         List<Role> roles = user.getRoles();
+
+        if (CollectionUtils.isEmpty(roles)) {
+            roles = new ArrayList<>();
+            roles.add(roleService.findByName("user"));
+        }
+
         Observable.fromIterable(roles).observeOn(Schedulers.single()).forEach(role -> {
             userRoleService.save(new UserRole(user.getId(), role.getId()));
         });
+
         return mapper.insert(user) > 0 ? true : false;
     }
 
@@ -75,6 +89,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
     public Boolean deleteUser(Long id) {
         userRoleService.deleteByUserOrRoleId("user_id", id);
         return delete(id);
+    }
+
+    @Override
+    public List<User> findPage(UserPageRequest userPageRequest) {
+        return null;
     }
 
 }

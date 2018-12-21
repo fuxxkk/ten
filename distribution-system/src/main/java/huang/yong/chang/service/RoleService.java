@@ -11,4 +11,6 @@ public interface RoleService extends BaseService<Role> {
     Boolean deleteRole(Long id);
 
     List<Role> findByUserId(Long userId);
+
+    Role findByName(String roleName);
 }

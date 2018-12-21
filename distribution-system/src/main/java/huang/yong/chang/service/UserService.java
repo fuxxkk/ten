@@ -1,8 +1,12 @@
 package huang.yong.chang.service;
 
 import huang.yong.chang.base.BaseService;
+import huang.yong.chang.base.PageRequest;
 import huang.yong.chang.entity.User;
+import huang.yong.chang.entity.request.UserPageRequest;
 import huang.yong.chang.excep.SystemException;
+
+import java.util.List;
 
 public interface UserService extends BaseService<User> {
 
@@ -27,4 +31,6 @@ public interface UserService extends BaseService<User> {
     Boolean updateUser(User user) throws SystemException;
 
     Boolean deleteUser(Long id);
+
+    List<User> findPage(UserPageRequest userPageRequest);
 }
