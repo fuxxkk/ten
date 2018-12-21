@@ -27,7 +27,6 @@ public class User extends BaseEntity<User> implements UserDetails, Serializable 
     @TableField("password")
     private String password;
 
-
     @TableField("parent_id")
     private Long parentId;
 
@@ -49,6 +48,8 @@ public class User extends BaseEntity<User> implements UserDetails, Serializable 
     @TableField("uesr_level")
     private Integer uesrLevel;
 
+    @TableField("is_deleted")
+    private Boolean isDeteleted;
 
     @TableField(exist = false)
     private List<Role> roles;

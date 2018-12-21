@@ -1,6 +1,8 @@
 package huang.yong.chang.config;
 
+import huang.yong.chang.entity.Role;
 import huang.yong.chang.entity.User;
+import huang.yong.chang.service.RoleService;
 import huang.yong.chang.service.UserService;
 import huang.yong.chang.util.MD5Util;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +14,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Slf4j
 public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -30,6 +36,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new DisabledException("账号密码错误");
         }
         log.info("用户：{} 登陆成功",user);
+        List<Role> roles = roleService.findByUserId(user.getId());
+        user.setRoles(roles);
         return new UsernamePasswordAuthenticationToken(user,inputPwd,user.getAuthorities());
     }
 

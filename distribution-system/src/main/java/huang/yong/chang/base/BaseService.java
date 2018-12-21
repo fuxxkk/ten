@@ -1,5 +1,7 @@
 package huang.yong.chang.base;
 
+import huang.yong.chang.excep.SystemException;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,7 +11,7 @@ public interface BaseService<T> {
 
     Boolean update(T t);
 
-    Boolean delete(String id);
+    Boolean delete(Serializable id);
 
     T selectOne(Serializable id);
 

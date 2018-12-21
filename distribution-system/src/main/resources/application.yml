@@ -21,7 +21,7 @@ spring:
     port: 6379
 
 mybatis-plus:
-  mapper-locations: classpath*:com/mapper/mapping/*.xml
+  mapper-locations: classpath*:huang/yong/chang/mapper/mapping/*.xml
 #springfox:
 #  documentation:
 #    swagger:
