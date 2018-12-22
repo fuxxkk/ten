@@ -2,6 +2,8 @@ package huang.yong.chang.controller;
 
 import huang.yong.chang.base.Result;
 import huang.yong.chang.entity.Recharge;
+import huang.yong.chang.entity.request.RechargePageRequest;
+import huang.yong.chang.entity.request.UserMsgPageRequest;
 import huang.yong.chang.service.RechargeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,5 +25,11 @@ public class RechargeController {
     @ApiOperation(value = "用户充值")
     public Result rechage(@RequestBody Recharge recharge)  {
         return Result.SUCCESS(rechargeService.rechage(recharge));
+    }
+
+    @PostMapping("findByUserId")
+    @ApiOperation(value = "查询当前用户消息(分页查询）")
+    public Result findByUserId(@RequestBody RechargePageRequest rechargePageRequest) {
+        return Result.SUCCESS(rechargeService.findByUserId(rechargePageRequest));
     }
 }

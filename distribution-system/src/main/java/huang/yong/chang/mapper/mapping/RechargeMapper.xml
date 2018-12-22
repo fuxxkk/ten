@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="huang.yong.chang.mapper.RechargeMapper">
+    <select id="findByUserId" resultType="huang.yong.chang.entity.Recharge" parameterType="huang.yong.chang.entity.request.RechargePageRequest">
+        select * from tb_recharge where user_id = #{userId}
+        <if test="orderBy!=null and orderBy !=''">
+            ORDER BY ${orderBy}
+        </if>
+        limit #{page},#{pageSize}
+    </select>
+
+</mapper>

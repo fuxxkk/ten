@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="huang.yong.chang.mapper.UserMsgMapper">
+    <select id="findByUserId" resultType="huang.yong.chang.entity.UserMsg" parameterType="huang.yong.chang.entity.request.UserMsgPageRequest">
+        select * from tb_user_msg where user_id = #{userId}
+        <if test="orderBy!=null and orderBy !=''">
+            ORDER BY ${orderBy}
+        </if>
+        limit #{page},#{pageSize}
+    </select>
+
+</mapper>
