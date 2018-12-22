@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Lists;
 import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.entity.*;
+import huang.yong.chang.entity.DTO.UserDTO;
 import huang.yong.chang.entity.request.UserPageRequest;
 import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.mapper.UserMapper;
@@ -102,9 +104,48 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         if (Stringu) {
         }*/
-        userPageRequest.setPage(userPageRequest.getPage()-1);
+        userPageRequest.setPage(userPageRequest.getPage() - 1);
         List<User> users = mapper.findPage(userPageRequest);
         return users;
     }
 
+    @Override
+    public UserDTO findUserTeamatesDetailByUserId(Long userId) {
+        User user = selectOne(userId);
+        Integer balance = balanceService.findBalanceByUserId(userId);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setAlipayAccount(user.getAlipayAccount());
+        userDTO.setAlipayName(user.getAlipayName());
+        userDTO.setBalance(balance);
+        List<User> sons = findSonByUserId(userId);
+        if (CollectionUtils.isNotEmpty(sons)) {
+
+            Iterable<UserDTO> userDTOS = Observable.fromIterable(sons).observeOn(Schedulers.io()).map(son -> {
+                return findUserTeamatesDetailByUserId(son.getId());
+            }).blockingIterable();
+            ArrayList<UserDTO> dtos = Lists.newArrayList(userDTOS);
+            userDTO.setUsers(dtos);
+        }
+        Integer totalBalance = getTotalBalance(userDTO, 0);
+        userDTO.setTotalBalance(totalBalance);
+        return userDTO;
+    }
+
+    @Override
+    public List<User> findSonByUserId(Long parentId) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("parent_id", parentId);
+        return mapper.selectList(wrapper);
+    }
+
+    private Integer getTotalBalance(UserDTO userDTO,int sum) {
+        sum +=userDTO.getBalance();
+        List<UserDTO> users = userDTO.getUsers();
+        if (CollectionUtils.isNotEmpty(users)) {
+            for (UserDTO user : users) {
+                sum = getTotalBalance(user, sum);
+            }
+        }
+        return sum;
+    }
 }

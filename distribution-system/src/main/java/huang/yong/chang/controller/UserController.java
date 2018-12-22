@@ -1,6 +1,7 @@
 package huang.yong.chang.controller;
 
 import huang.yong.chang.base.Result;
+import huang.yong.chang.entity.DTO.UserDTO;
 import huang.yong.chang.entity.Role;
 import huang.yong.chang.entity.User;
 import huang.yong.chang.entity.request.UserPageRequest;
@@ -41,5 +42,11 @@ public class UserController {
     @ApiOperation(value = "分页查询")
     public Result findPage(@RequestBody UserPageRequest userPageRequest) throws SystemException {
         return Result.SUCCESS(userService.findPage(userPageRequest));
+    }
+
+    @GetMapping("findUserTeamatesDetailByUserId")
+    @ApiOperation(value = "查找团队成员")
+    public Result findUserTeamatesDetailByUserId(Long id) {
+        return Result.SUCCESS(userService.findUserTeamatesDetailByUserId(id));
     }
 }
