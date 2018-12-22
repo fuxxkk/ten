@@ -94,6 +94,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
 
     @Override
     public Boolean deleteUser(Long id) {
+        User user = selectOne(id);
+        DeleteUser deleteUser = new DeleteUser(user.getId(), user.getUsername(), user.getParentId(), user.getAlipayAccount(), user.getAlipayName(), new Date());
+        mapper.saveDeleteUser(deleteUser);
         userRoleService.deleteByUserOrRoleId("user_id", id);
         return delete(id);
     }
@@ -137,6 +140,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         wrapper.eq("parent_id", parentId);
         return mapper.selectList(wrapper);
     }
+
 
     private Integer getTotalBalance(UserDTO userDTO,int sum) {
         sum +=userDTO.getBalance();

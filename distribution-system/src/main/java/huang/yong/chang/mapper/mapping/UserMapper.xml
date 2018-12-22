@@ -17,4 +17,8 @@
         </if>
         limit #{page},#{pageSize}
     </select>
+
+    <insert id="saveDeleteUser" parameterType="huang.yong.chang.entity.DeleteUser">
+      insert  into tb_delete_user values (#{deleteUser.id},#{deleteUser.parentId},#{deleteUser.username},#{deleteUser.alipayAccount},#{deleteUser.alipayName},#{deleteUser.deleteDate})
+    </insert>
 </mapper>
