@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class BaseExceptionHandler {
 
-    @ExceptionHandler(SystemException.class)
+    @ExceptionHandler(Exception.class)
     @ResponseBody
     public Result error(SystemException e) {
         e.printStackTrace();

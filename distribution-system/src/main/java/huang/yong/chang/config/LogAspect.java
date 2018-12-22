@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 @Aspect
 @Slf4j
 @Component
+@Order(101)
 public class LogAspect {
 
     private final ThreadLocal<Long> startTime = new ThreadLocal<>();
