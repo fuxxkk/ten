@@ -10,5 +10,5 @@ public interface BalanceService extends BaseService<Balance> {
      * @param id
      * @return
      */
-    Integer findBalanceByUserId(Long id);
+    Double findBalanceByUserId(Long id);
 }

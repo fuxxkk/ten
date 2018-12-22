@@ -11,10 +11,10 @@ public class UserDTO {
     private String alipayName;
 
     //余额
-    private Integer balance;
+    private Double balance;
     //团队成员
     private List<UserDTO> users;
 
     //团队总余额
-    private Integer totalBalance;
+    private Double totalBalance;
 }

@@ -16,7 +16,7 @@ public class BalanceRecord extends BaseEntity<BalanceRecord> {
 
     //余额变动
     @TableField("change_balance")
-    private Integer changeBalance;
+    private Double changeBalance;
 
     @TableField("modify_date")
     private Date modifyDate;

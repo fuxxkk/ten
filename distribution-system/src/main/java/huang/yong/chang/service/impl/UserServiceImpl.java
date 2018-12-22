@@ -75,8 +75,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
             userRoleService.save(new UserRole(user.getId(), role.getId()));
         });
 
-        balanceService.save(new Balance(user.getId(), 0, new Date()));
-        integralService.save(new Integral(user.getId(), 0, new Date()));
+        balanceService.save(new Balance(user.getId(), new Double(0), new Date()));
+        integralService.save(new Integral(user.getId(), new Double(0), new Date()));
 
         return mapper.insert(user) > 0 ? true : false;
     }
@@ -115,7 +115,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
     @Override
     public UserDTO findUserTeamatesDetailByUserId(Long userId) {
         User user = selectOne(userId);
-        Integer balance = balanceService.findBalanceByUserId(userId);
+        Double balance = balanceService.findBalanceByUserId(userId);
         UserDTO userDTO = new UserDTO();
         userDTO.setAlipayAccount(user.getAlipayAccount());
         userDTO.setAlipayName(user.getAlipayName());
@@ -129,7 +129,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
             ArrayList<UserDTO> dtos = Lists.newArrayList(userDTOS);
             userDTO.setUsers(dtos);
         }
-        Integer totalBalance = getTotalBalance(userDTO, 0);
+        Double totalBalance = getTotalBalance(userDTO, 0);
         userDTO.setTotalBalance(totalBalance);
         return userDTO;
     }
@@ -142,7 +142,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
     }
 
 
-    private Integer getTotalBalance(UserDTO userDTO,int sum) {
+    private Double getTotalBalance(UserDTO userDTO,double sum) {
         sum +=userDTO.getBalance();
         List<UserDTO> users = userDTO.getUsers();
         if (CollectionUtils.isNotEmpty(users)) {

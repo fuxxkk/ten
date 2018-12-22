@@ -20,7 +20,7 @@ public class IntegralRecord extends BaseEntity<IntegralRecord> {
 
     //变动积分
     @TableField("change_integral")
-    private Integer changeIntegral;
+    private Double changeIntegral;
 
     @TableField("modify_date")
     private Date modify_date;

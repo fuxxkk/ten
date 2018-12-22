@@ -14,12 +14,21 @@ import java.util.Date;
 @TableName("tb_recharge")
 public class Recharge extends BaseEntity<Recharge> {
 
+    public Recharge(Long userId, Double rechargeMoney, Date rechargeDate) {
+        this.userId = userId;
+        this.rechargeMoney = rechargeMoney;
+        this.rechargeDate = rechargeDate;
+    }
+
+    public Recharge() {
+    }
+
     @TableField("user_id")
     private Long userId;
 
     //充值金额
     @TableField("recharge_money")
-    private Integer rechargeMoney;
+    private Double rechargeMoney;
 
     //充值时间
     @TableField("recharge_date")

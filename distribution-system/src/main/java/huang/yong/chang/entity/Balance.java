@@ -14,7 +14,7 @@ import java.util.Date;
 @TableName("tb_balance")
 public class Balance extends BaseEntity<Balance> {
 
-    public Balance(Long userId, Integer balance, Date modifyDate) {
+    public Balance(Long userId, Double balance, Date modifyDate) {
         this.userId = userId;
         this.balance = balance;
         this.modifyDate = modifyDate;
@@ -27,7 +27,7 @@ public class Balance extends BaseEntity<Balance> {
     private Long userId;
     //余额
     @TableField("balance")
-    private Integer balance;
+    private Double balance;
 
     @TableField("modify_date")
     private Date modifyDate;

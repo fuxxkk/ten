@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BalanceServiceImpl extends BaseServiceImpl<Balance, BalanceMapper> implements BalanceService {
     @Override
-    public Integer findBalanceByUserId(Long id) {
+    public Double findBalanceByUserId(Long id) {
         QueryWrapper<Balance> balanceQueryWrapper = new QueryWrapper<>();
         balanceQueryWrapper.eq("user_id", id);
         return mapper.selectOne(balanceQueryWrapper).getBalance();
