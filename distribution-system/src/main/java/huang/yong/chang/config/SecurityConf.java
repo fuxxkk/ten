@@ -4,6 +4,7 @@ import huang.yong.chang.service.impl.LoginUserServiceImpl;
 import huang.yong.chang.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -33,6 +34,9 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("dataSource")
     private DataSource dataSource;
+
+    @Value("${authority.nologinUrl}")
+    private String[] urls;
 
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
@@ -91,7 +95,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .and()
                 .csrf().disable();*/
-        http.authorizeRequests().antMatchers("/user/checkUser").permitAll().anyRequest().authenticated()
+        http.authorizeRequests().antMatchers(urls).permitAll().anyRequest().authenticated()
                 .and()
                 .formLogin()//.loginPage("http://www.baidu.com")
                 .defaultSuccessUrl("/swagger-ui.html",true).failureHandler(authenticationFailureHandler)      //  定义当需要用户登录时候，转到的登录页面。

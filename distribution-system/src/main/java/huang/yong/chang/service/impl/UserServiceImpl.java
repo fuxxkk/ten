@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.entity.*;
 import huang.yong.chang.entity.DTO.UserDTO;
@@ -18,15 +19,15 @@ import huang.yong.chang.util.IdUtil;
 import huang.yong.chang.util.MD5Util;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
+@Slf4j
 public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implements UserService {
 
     @Autowired
@@ -39,7 +40,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
     @Autowired
     private BalanceService balanceService;
 
-    private final ThreadLocal<Boolean> threadLocal = new ThreadLocal<>();
+    private final Map<String,Boolean> map = Maps.newHashMap();
 
     @Override
     public User findByUsername(String username) {
@@ -150,10 +151,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("username", userVO.getUsername()).eq("alipay_account", userVO.getAlipayAccount())
                 .eq("alipay_name", userVO.getAlipayName()).eq("phone", userVO.getPhone());
-        boolean isTrue = mapper.selectOne(wrapper) == null;
-        if (isTrue) {
-            threadLocal.set(true);
-        }
+        boolean isTrue = mapper.selectOne(wrapper) != null;
+        map.put(userVO.getUsername(), isTrue);
         return isTrue;
     }
 
@@ -174,7 +173,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
                 throw new SystemException("输入的旧密码不正确！");
             }
         } else {//未登录
-            Boolean isCheck = threadLocal.get();
+            Boolean isCheck = map.get(userVO.getUsername());
             if (isCheck != null && isCheck == true) {
                 wrapper.eq("username", userVO.getUsername());
                 User newUser = new User();
@@ -186,6 +185,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         }
     }
 
+    @Scheduled(cron = "0/10 * * * * ?")
+    private void init() {
+        map.clear();
+        log.info("init map....");
+    }
 
     private Double getTotalBalance(UserDTO userDTO, double sum) {
         sum += userDTO.getBalance();

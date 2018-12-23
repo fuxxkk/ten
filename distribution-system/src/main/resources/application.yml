@@ -29,3 +29,4 @@ mybatis-plus:
 #        path: /api-docs
 authority:
   url: /user/delete,/user/update,/role/**,/user/findPage,/swagger*
+  nologinUrl: /user/checkUser,/user/chagePwdNoLogin
