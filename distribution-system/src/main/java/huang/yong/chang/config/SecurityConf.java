@@ -35,8 +35,8 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     @Qualifier("dataSource")
     private DataSource dataSource;
 
-    @Value("${authority.nologinUrl}")
-    private String[] urls;
+    //@Value("${authority.nologinUrl}")
+    private static final String[] urls = {"/user/checkUser","/user/chagePwdNoLogin"};
 
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
