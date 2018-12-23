@@ -6,6 +6,7 @@ import huang.yong.chang.entity.Balance;
 import huang.yong.chang.entity.DTO.UserDTO;
 import huang.yong.chang.entity.User;
 import huang.yong.chang.entity.request.UserPageRequest;
+import huang.yong.chang.entity.request.UserVO;
 import huang.yong.chang.excep.SystemException;
 
 import java.util.List;
@@ -45,5 +46,18 @@ public interface UserService extends BaseService<User> {
 
     List<User> findSonByUserId(Long parentId);
 
+    /**
+     * 验证用户
+     * @param userVO
+     * @return
+     */
+    Boolean checkUser(UserVO userVO);
+
+    /**
+     * 修改密码
+     * @param userVO
+     * @return
+     */
+    Boolean chagePwd(UserVO userVO) throws SystemException;
 
 }

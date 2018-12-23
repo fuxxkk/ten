@@ -28,4 +28,4 @@ mybatis-plus:
 #      v2:
 #        path: /api-docs
 authority:
-  url: user/delete,user/update,role,user/findPage
+  url: /user/delete,/user/update,/role/**,/user/findPage,/swagger*

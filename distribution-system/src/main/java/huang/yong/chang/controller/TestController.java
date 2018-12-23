@@ -33,8 +33,5 @@ public class TestController {
     public Result login(String username) {
 
     }*/
-    @GetMapping("user")
-    public Result getUser() {
-        return Result.SUCCESS(ContextUtils.getUser());
-    }
+
 }

@@ -9,9 +9,11 @@ import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.entity.*;
 import huang.yong.chang.entity.DTO.UserDTO;
 import huang.yong.chang.entity.request.UserPageRequest;
+import huang.yong.chang.entity.request.UserVO;
 import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.mapper.UserMapper;
 import huang.yong.chang.service.*;
+import huang.yong.chang.util.ContextUtils;
 import huang.yong.chang.util.IdUtil;
 import huang.yong.chang.util.MD5Util;
 import io.reactivex.Observable;
@@ -36,6 +38,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
     private IntegralService integralService;
     @Autowired
     private BalanceService balanceService;
+
+    private final ThreadLocal<Boolean> threadLocal = new ThreadLocal<>();
 
     @Override
     public User findByUsername(String username) {
@@ -141,9 +145,50 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         return mapper.selectList(wrapper);
     }
 
+    @Override
+    public Boolean checkUser(UserVO userVO) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", userVO.getUsername()).eq("alipay_account", userVO.getAlipayAccount())
+                .eq("alipay_name", userVO.getAlipayName()).eq("phone", userVO.getPhone());
+        boolean isTrue = mapper.selectOne(wrapper) == null;
+        if (isTrue) {
+            threadLocal.set(true);
+        }
+        return isTrue;
+    }
 
-    private Double getTotalBalance(UserDTO userDTO,double sum) {
-        sum +=userDTO.getBalance();
+    @Override
+    public Boolean chagePwd(UserVO userVO) throws SystemException {
+        User user = ContextUtils.getUser();
+        boolean isLogin = user != null ? true : false;
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        String encodeNewPwd = MD5Util.encode(userVO.getNewPassword());
+        if (isLogin) {//已登录
+            String encodeOldPwd = MD5Util.encode(userVO.getOldPassword());
+            if (user.getPassword().equalsIgnoreCase(encodeOldPwd)) {
+                wrapper.eq("id", user.getId());
+                User newUser = new User();
+                newUser.setPassword(encodeNewPwd);
+                return mapper.update(newUser, wrapper) > 0 ? true : false;
+            } else {
+                throw new SystemException("输入的旧密码不正确！");
+            }
+        } else {//未登录
+            Boolean isCheck = threadLocal.get();
+            if (isCheck != null && isCheck == true) {
+                wrapper.eq("username", userVO.getUsername());
+                User newUser = new User();
+                newUser.setPassword(encodeNewPwd);
+                return mapper.update(newUser, wrapper) > 0 ? true : false;
+            }else {
+                throw new SystemException("请先验证用户信息！");
+            }
+        }
+    }
+
+
+    private Double getTotalBalance(UserDTO userDTO, double sum) {
+        sum += userDTO.getBalance();
         List<UserDTO> users = userDTO.getUsers();
         if (CollectionUtils.isNotEmpty(users)) {
             for (UserDTO user : users) {

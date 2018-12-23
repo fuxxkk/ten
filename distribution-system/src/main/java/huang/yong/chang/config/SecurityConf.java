@@ -91,7 +91,9 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .and()
                 .csrf().disable();*/
-        http.formLogin()//.loginPage("http://www.baidu.com")
+        http.authorizeRequests().antMatchers("/user/checkUser").permitAll().anyRequest().authenticated()
+                .and()
+                .formLogin()//.loginPage("http://www.baidu.com")
                 .defaultSuccessUrl("/swagger-ui.html",true).failureHandler(authenticationFailureHandler)      //  定义当需要用户登录时候，转到的登录页面。
                 .and()
                 .authorizeRequests()        // 定义哪些URL需要被保护、哪些不需要被保护
@@ -102,9 +104,9 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().and().rememberMe().tokenValiditySeconds(10).rememberMeServices(rememberMeServices()).key("INTERNAL_SECRET_KEY");
     }
 
-   /* @Override
+    /*@Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().mvcMatchers("/swagger-ui.html/**","/login");
+        web.ignoring().antMatchers("/user/checkUser");
     }*/
 
     @Bean

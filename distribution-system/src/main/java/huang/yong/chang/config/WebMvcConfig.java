@@ -1,13 +1,16 @@
 package huang.yong.chang.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
+
+    @Value("${authority.url}")
+    private String[] urls;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -22,7 +25,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SwaggerIntercepter()).addPathPatterns("/swagger*");
+        registry.addInterceptor(new AuthorityIntercepter()).addPathPatterns(urls);
         super.addInterceptors(registry);
     }
 }

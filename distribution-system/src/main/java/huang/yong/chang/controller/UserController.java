@@ -5,8 +5,10 @@ import huang.yong.chang.entity.DTO.UserDTO;
 import huang.yong.chang.entity.Role;
 import huang.yong.chang.entity.User;
 import huang.yong.chang.entity.request.UserPageRequest;
+import huang.yong.chang.entity.request.UserVO;
 import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.service.UserService;
+import huang.yong.chang.util.ContextUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +50,28 @@ public class UserController {
     @ApiOperation(value = "查找团队成员")
     public Result findUserTeamatesDetailByUserId(Long id) {
         return Result.SUCCESS(userService.findUserTeamatesDetailByUserId(id));
+    }
+    @GetMapping("user")
+    @ApiOperation(value = "获取当前登录用户信息")
+    public Result getUser() {
+        return Result.SUCCESS(ContextUtils.getUser());
+    }
+
+    @PostMapping("checkUser")
+    @ApiOperation(value = "验证用户")
+    public Result checkUser(@RequestBody UserVO userVO) {
+        return Result.SUCCESS(userService.checkUser(userVO));
+    }
+
+    @PostMapping("chagePwdNoLogin")
+    @ApiOperation(value = "修改密码（未登录）")
+    public Result chagePwdNoLogin(@RequestBody UserVO userVO) throws SystemException {
+        return Result.SUCCESS(userService.chagePwd(userVO));
+    }
+
+    @PostMapping("chagePwdLogin")
+    @ApiOperation(value = "修改密码（已登录）")
+    public Result chagePwdLogin(@RequestBody UserVO userVO) throws SystemException {
+        return Result.SUCCESS(userService.chagePwd(userVO));
     }
 }
