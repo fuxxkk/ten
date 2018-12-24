@@ -35,7 +35,12 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
     @Override
     public Boolean rechage(Recharge recharge) {
         Long id = IdUtil.getId();
-        User user = ContextUtils.getUser();
+        User user;
+        if (recharge.getUserId() == null) {
+            user = ContextUtils.getUser();
+        }else {
+            user = userService.selectOne(recharge.getUserId());
+        }
         recharge.setUserId(user.getId());
         Date newDate = new Date();
         recharge.setRechargeDate(newDate);
@@ -45,7 +50,7 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
         User admin = userService.findByUsername("admin");
         UserMsg userMsg = new UserMsg(admin.getId(), id, recharge.getRechargeMoney(), false, newDate);
         String content = "用户：" + user.getUsername() + "(" + user.getAlipayAccount() + "," + user.getAlipayName() + ") " +
-                "在" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "进行了充值，金额为："+recharge.getRechargeMoney()+"元 ，请确认。";
+                "在" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "进行了充值，金额为：" + recharge.getRechargeMoney() + "元 ，请确认。";
         userMsg.setContent(content);
         userMsgService.save(userMsg);
 
@@ -77,6 +82,13 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
         //增加积分记录
         IntegralRecord integralRecord = new IntegralRecord(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney(), new Date());
         integralRecordService.save(integralRecord);
+
+        //给充值用户发消息
+        UserMsg userMsg = new UserMsg(rechargeFromMsg.getUserId(), null, null, false, new Date());
+        String content = "管理员已对你的充值，充值金额：" + rechargeFromMsg.getRechargeMoney()+" 进行了确认。";
+        userMsg.setContent(content);
+        userMsgService.save(userMsg);
+        //todo 给父级消息
 
         rechargeFromMsg.setIsConfirm(true);
         return update(rechargeFromMsg);

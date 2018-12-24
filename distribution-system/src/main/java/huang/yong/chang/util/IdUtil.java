@@ -8,7 +8,7 @@ public class IdUtil {
     }
 
     public static Long getId() {
-        SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(0, 0);
+        SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(5, 5);
         return snowflakeIdWorker.nextId();
     }
 }
