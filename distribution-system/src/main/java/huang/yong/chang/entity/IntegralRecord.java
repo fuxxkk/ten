@@ -2,7 +2,11 @@ package huang.yong.chang.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import huang.yong.chang.base.BaseEntity;
+import huang.yong.chang.config.LongJsonDeserializer;
+import huang.yong.chang.config.LongJsonSerializer;
 import lombok.Data;
 
 import java.util.Date;
@@ -14,16 +18,18 @@ import java.util.Date;
 @TableName("tb_integral_record")
 public class IntegralRecord extends BaseEntity<IntegralRecord> {
 
-    public IntegralRecord(Long userId, Double changeIntegral, Date modify_date) {
+    public IntegralRecord(Long userId, Double changeIntegral, Date modifyDate) {
         this.userId = userId;
         this.changeIntegral = changeIntegral;
-        this.modify_date = modify_date;
+        this.modifyDate = modifyDate;
     }
 
     public IntegralRecord() {
     }
 
     @TableField("user_id")
+    @JsonSerialize(using = LongJsonSerializer.class)
+    @JsonDeserialize(using = LongJsonDeserializer.class)
     private Long userId;
 
     //变动积分
@@ -31,6 +37,6 @@ public class IntegralRecord extends BaseEntity<IntegralRecord> {
     private Double changeIntegral;
 
     @TableField("modify_date")
-    private Date modify_date;
+    private Date modifyDate;
 
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="huang.yong.chang.mapper.BalanceRecordMapper">
+    <select id="findPageByUserId" resultType="huang.yong.chang.entity.BalanceRecord" parameterType="huang.yong.chang.entity.request.BalanceRecordPageRequest">
+        select * from tb_balance_record where user_id = #{userId}
+        <if test="orderBy!=null and orderBy !=''">
+            ORDER BY ${orderBy}
+        </if>
+        limit #{page},#{pageSize}
+    </select>
+</mapper>

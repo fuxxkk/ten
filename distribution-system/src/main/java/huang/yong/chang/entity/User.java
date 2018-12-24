@@ -2,7 +2,12 @@ package huang.yong.chang.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import huang.yong.chang.base.BaseEntity;
+import huang.yong.chang.config.LongJsonDeserializer;
+import huang.yong.chang.config.LongJsonSerializer;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +33,8 @@ public class User extends BaseEntity<User> implements UserDetails, Serializable 
     private String password;
 
     @TableField("parent_id")
+    @JsonSerialize(using = LongJsonSerializer.class)
+    @JsonDeserialize(using = LongJsonDeserializer.class)
     private Long parentId;
 
     @TableField("phone")
@@ -49,6 +56,7 @@ public class User extends BaseEntity<User> implements UserDetails, Serializable 
     private Integer uesrLevel;
 
     @TableField("is_deleted")
+    @ApiModelProperty(hidden = true)
     private Boolean isDeteleted;
 
     @TableField(exist = false)
@@ -56,6 +64,7 @@ public class User extends BaseEntity<User> implements UserDetails, Serializable 
 
 
     @Override
+    @ApiModelProperty(hidden = true)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
         if (!CollectionUtils.isEmpty(roles)) {
@@ -67,21 +76,25 @@ public class User extends BaseEntity<User> implements UserDetails, Serializable 
     }
 
     @Override
+    @ApiModelProperty(hidden = true)
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @ApiModelProperty(hidden = true)
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @ApiModelProperty(hidden = true)
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @ApiModelProperty(hidden = true)
     public boolean isEnabled() {
         return true;
     }

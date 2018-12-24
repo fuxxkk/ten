@@ -23,11 +23,14 @@ public class BaseEntity<T extends Model> extends Model<T> implements Serializabl
     private Long id;
 
     @TableField("backup1")
+    @ApiModelProperty(hidden = true)
     private String backup1;
 
     @TableField("backup2")
+    @ApiModelProperty(hidden = true)
     private String backup2;
 
     @TableField("backup3")
+    @ApiModelProperty(hidden = true)
     private String backup3;
 }

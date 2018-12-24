@@ -5,6 +5,7 @@ import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.entity.Balance;
 import huang.yong.chang.mapper.BalanceMapper;
 import huang.yong.chang.service.BalanceService;
+import huang.yong.chang.util.ContextUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -13,6 +14,9 @@ import java.util.Date;
 public class BalanceServiceImpl extends BaseServiceImpl<Balance, BalanceMapper> implements BalanceService {
     @Override
     public Double findBalanceByUserId(Long id) {
+        if (id==null) {
+            id = ContextUtils.getUser().getId();
+        }
         QueryWrapper<Balance> balanceQueryWrapper = new QueryWrapper<>();
         balanceQueryWrapper.eq("user_id", id);
         return mapper.selectOne(balanceQueryWrapper).getBalance();

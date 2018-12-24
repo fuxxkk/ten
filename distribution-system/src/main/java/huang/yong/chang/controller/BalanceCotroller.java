@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,7 +21,7 @@ public class BalanceCotroller {
 
     @GetMapping("findBalanceByUserId")
     @ApiOperation(value = "查询当前用户余额")
-    public Result findBalanceByUserId(Long id) {
+    public Result findBalanceByUserId(@RequestParam(required = false) Long id) {
         return Result.SUCCESS(balanceService.findBalanceByUserId(id));
     }
 }
