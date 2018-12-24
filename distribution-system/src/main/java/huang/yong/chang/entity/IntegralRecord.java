@@ -14,6 +14,14 @@ import java.util.Date;
 @TableName("tb_integral_record")
 public class IntegralRecord extends BaseEntity<IntegralRecord> {
 
+    public IntegralRecord(Long userId, Double changeIntegral, Date modify_date) {
+        this.userId = userId;
+        this.changeIntegral = changeIntegral;
+        this.modify_date = modify_date;
+    }
+
+    public IntegralRecord() {
+    }
 
     @TableField("user_id")
     private Long userId;

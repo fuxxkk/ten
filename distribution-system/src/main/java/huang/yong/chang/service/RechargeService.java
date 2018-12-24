@@ -21,4 +21,11 @@ public interface RechargeService extends BaseService<Recharge> {
      * @return
      */
     List<Recharge> findByUserId(RechargePageRequest rechargePageRequest);
+
+    /**
+     * 设置成确定充值
+     * @param id
+     * @return
+     */
+    Boolean setComfirmById(Long id);
 }

@@ -1,14 +1,10 @@
 package huang.yong.chang.service.impl;
 
 import huang.yong.chang.base.BaseServiceImpl;
-import huang.yong.chang.entity.Recharge;
-import huang.yong.chang.entity.User;
-import huang.yong.chang.entity.UserMsg;
+import huang.yong.chang.entity.*;
 import huang.yong.chang.entity.request.RechargePageRequest;
 import huang.yong.chang.mapper.RechargeMapper;
-import huang.yong.chang.service.RechargeService;
-import huang.yong.chang.service.UserMsgService;
-import huang.yong.chang.service.UserService;
+import huang.yong.chang.service.*;
 import huang.yong.chang.util.ContextUtils;
 import huang.yong.chang.util.IdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +21,16 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
     private UserService userService;
     @Autowired
     private UserMsgService userMsgService;
+
+    @Autowired
+    private BalanceService balanceService;
+
+    @Autowired
+    private BalanceRecordService balanceRecordService;
+    @Autowired
+    private IntegralService integralService;
+    @Autowired
+    private IntegralRecordService integralRecordService;
 
     @Override
     public Boolean rechage(Recharge recharge) {
@@ -53,5 +59,26 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
         }
         rechargePageRequest.setPage(rechargePageRequest.getPage() - 1);
         return mapper.findByUserId(rechargePageRequest);
+    }
+
+    @Override
+    public Boolean setComfirmById(Long id) {
+        //查询出该条充值记录的信息
+        Recharge rechargeFromMsg = selectOne(id);
+        //更改用户余额
+        balanceService.updateUserBalance(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney());
+        //todo 抽佣
+
+        //增加余额记录
+        BalanceRecord balanceRecord = new BalanceRecord(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney(), new Date());
+        balanceRecordService.save(balanceRecord);
+        //更改用户积分
+        integralService.updateUserIntegral(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney());
+        //增加积分记录
+        IntegralRecord integralRecord = new IntegralRecord(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney(), new Date());
+        integralRecordService.save(integralRecord);
+
+        rechargeFromMsg.setIsConfirm(true);
+        return update(rechargeFromMsg);
     }
 }

@@ -11,6 +11,15 @@ import java.util.Date;
 @TableName("tb_balance_record")
 public class BalanceRecord extends BaseEntity<BalanceRecord> {
 
+    public BalanceRecord(Long userId, Double changeBalance, Date modifyDate) {
+        this.userId = userId;
+        this.changeBalance = changeBalance;
+        this.modifyDate = modifyDate;
+    }
+
+    public BalanceRecord() {
+    }
+
     @TableField("user_id")
     private Long userId;
 

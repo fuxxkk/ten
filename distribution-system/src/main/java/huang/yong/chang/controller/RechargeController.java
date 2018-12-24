@@ -8,10 +8,7 @@ import huang.yong.chang.service.RechargeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("recharge")
 @RestController
@@ -28,8 +25,14 @@ public class RechargeController {
     }
 
     @PostMapping("findByUserId")
-    @ApiOperation(value = "查询当前用户消息(分页查询）")
+    @ApiOperation(value = "查询当前用户充值记录(分页查询）")
     public Result findByUserId(@RequestBody RechargePageRequest rechargePageRequest) {
         return Result.SUCCESS(rechargeService.findByUserId(rechargePageRequest));
+    }
+
+    @GetMapping("setConfirm")
+    @ApiOperation(value = "确认充值")
+    public Result setConfirm(Long rechargeId) {
+        return Result.SUCCESS(rechargeService.setComfirmById(rechargeId));
     }
 }

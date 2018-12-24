@@ -34,4 +34,7 @@ public class Recharge extends BaseEntity<Recharge> {
     @TableField("recharge_date")
     private Date rechargeDate;
 
+    //是否确认充值
+    @TableField("is_confirm")
+    private Boolean isConfirm;
 }

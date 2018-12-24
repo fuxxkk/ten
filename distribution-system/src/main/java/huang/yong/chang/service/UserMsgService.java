@@ -21,4 +21,5 @@ public interface UserMsgService extends BaseService<UserMsg> {
      * @return
      */
     List<UserMsg> findByUserId(UserMsgPageRequest userMsgPageRequest);
+
 }
