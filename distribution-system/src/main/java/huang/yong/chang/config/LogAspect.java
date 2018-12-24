@@ -1,5 +1,6 @@
 package huang.yong.chang.config;
 
+import huang.yong.chang.util.ContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -31,12 +32,13 @@ public class LogAspect {
 
     @Before(value = "recordlog()")
     public void beforeLog(JoinPoint joinPoint) {
+        String username = ContextUtils.getUser().getUsername();
         startTime.set(System.currentTimeMillis());
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 
         String name = joinPoint.getSignature().getName();
-        log.info("========httpmethod:"+request.getMethod()+"===="+"method："+name+",args:"+ Arrays.toString(joinPoint.getArgs())+"========");
+        log.info("用户：{}========httpmethod:"+request.getMethod()+"===="+"method："+name+",args:"+ Arrays.toString(joinPoint.getArgs())+"========",username);
     }
 
     @After(value = "recordlog()")

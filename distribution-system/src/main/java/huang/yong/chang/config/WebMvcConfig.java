@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     //@Value("${authority.url}")
-    private static final String[] urls = {"/user/delete","/user/update","/role/**","/user/findPage","/swagger*"} ;
+    private static final String[] urls = {"/user/delete","/user/update","/role/**","/user/findPage","/swagger*","/recharge/setConfirm"} ;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
