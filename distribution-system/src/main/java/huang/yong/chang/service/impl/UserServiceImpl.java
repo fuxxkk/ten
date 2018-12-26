@@ -53,6 +53,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         if (one == null) {
             throw new SystemException("用户名或密码错误！");
         }
+        List<Role> roles = roleService.findByUserId(one.getId());
+        one.setRoles(roles);
         ContextUtils.setUser(one);
         return true;
     }
