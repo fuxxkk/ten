@@ -40,7 +40,19 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
     @Autowired
     private BalanceService balanceService;
 
-    private final Map<String,Boolean> map = Maps.newHashMap();
+    private final Map<String, Boolean> map = Maps.newHashMap();
+
+    @Override
+    public Boolean login(User user) throws SystemException {
+        QueryWrapper<User> wrapper = new QueryWrapper<User>();
+        wrapper.eq("username", user.getUsername()).eq("password", MD5Util.encode(user.getPassword()));
+        User one = mapper.selectOne(wrapper);
+        if (one == null) {
+            throw new SystemException("用户名或密码错误！");
+        }
+        ContextUtils.setUser(user);
+        return true;
+    }
 
     @Override
     public User findByUsername(String username) {
@@ -179,10 +191,15 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
                 User newUser = new User();
                 newUser.setPassword(encodeNewPwd);
                 return mapper.update(newUser, wrapper) > 0 ? true : false;
-            }else {
+            } else {
                 throw new SystemException("请先验证用户信息！");
             }
         }
+    }
+
+    @Override
+    public Boolean isLogin() {
+        return ContextUtils.getUser() == null ? false : true;
     }
 
     @Scheduled(cron = "0/10 * * * * ?")

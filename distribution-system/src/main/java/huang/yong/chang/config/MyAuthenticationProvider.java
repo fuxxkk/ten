@@ -1,3 +1,4 @@
+/*
 package huang.yong.chang.config;
 
 import huang.yong.chang.entity.Role;
@@ -46,3 +47,4 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         return true;
     }
 }
+*/

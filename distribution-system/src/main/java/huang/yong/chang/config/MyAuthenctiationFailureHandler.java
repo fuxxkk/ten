@@ -1,3 +1,4 @@
+/*
 package huang.yong.chang.config;
 
 import com.alibaba.fastjson.JSON;
@@ -12,9 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+*/
 /**
  * 登录失败处理器
- */
+ *//*
+
 @Component
 @Slf4j
 public class MyAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -29,3 +32,4 @@ public class MyAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailu
         //response.sendRedirect("http://www.baidu.com");
     }
 }
+*/

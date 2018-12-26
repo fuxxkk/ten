@@ -9,21 +9,14 @@ import huang.yong.chang.config.LongJsonDeserializer;
 import huang.yong.chang.config.LongJsonSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 @TableName("tb_user")
 @Data
-public class User extends BaseEntity<User> implements UserDetails, Serializable {
+public class User extends BaseEntity<User> implements  Serializable {
 
 
     @TableField("username")
@@ -63,39 +56,4 @@ public class User extends BaseEntity<User> implements UserDetails, Serializable 
     private List<Role> roles;
 
 
-    @Override
-    @ApiModelProperty(hidden = true)
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> auths = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(roles)) {
-            roles.stream().forEach(role -> {
-                auths.add(new SimpleGrantedAuthority(role.getRoleName()));
-            });
-        }
-        return auths;
-    }
-
-    @Override
-    @ApiModelProperty(hidden = true)
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @ApiModelProperty(hidden = true)
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    @ApiModelProperty(hidden = true)
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    @ApiModelProperty(hidden = true)
-    public boolean isEnabled() {
-        return true;
-    }
 }

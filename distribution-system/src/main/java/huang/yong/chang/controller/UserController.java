@@ -74,4 +74,16 @@ public class UserController {
     public Result chagePwdLogin(@RequestBody UserVO userVO) throws SystemException {
         return Result.SUCCESS(userService.chagePwd(userVO));
     }
+
+    @GetMapping("isLogin")
+    @ApiOperation(value = "是否登录")
+    public Result isLogin() {
+        return Result.SUCCESS(userService.isLogin());
+    }
+
+    @PostMapping("login")
+    @ApiOperation(value = "登录")
+    public Result login(@RequestBody User user) throws SystemException {
+        return Result.SUCCESS(userService.login(user));
+    }
 }

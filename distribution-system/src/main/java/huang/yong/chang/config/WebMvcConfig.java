@@ -22,10 +22,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .allowCredentials(true)
                 .maxAge(3600L);
     }
-
+/*
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthorityIntercepter()).addPathPatterns(urls);
         super.addInterceptors(registry);
-    }
+    }*/
 }

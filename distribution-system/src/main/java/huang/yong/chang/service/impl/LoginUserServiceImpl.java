@@ -1,3 +1,4 @@
+/*
 package huang.yong.chang.service.impl;
 
 import huang.yong.chang.entity.User;
@@ -26,3 +27,4 @@ public class LoginUserServiceImpl implements UserDetailsService {
 
 
 }
+*/

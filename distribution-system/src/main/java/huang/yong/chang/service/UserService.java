@@ -14,6 +14,13 @@ import java.util.List;
 public interface UserService extends BaseService<User> {
 
     /**
+     * 登录
+     * @param user
+     * @return
+     */
+    Boolean login(User user) throws SystemException;
+
+    /**
      * 根据用户名查询
      * @param username
      * @return
@@ -59,5 +66,12 @@ public interface UserService extends BaseService<User> {
      * @return
      */
     Boolean chagePwd(UserVO userVO) throws SystemException;
+
+
+    /**
+     * 是否登录
+     * @return
+     */
+    Boolean isLogin();
 
 }

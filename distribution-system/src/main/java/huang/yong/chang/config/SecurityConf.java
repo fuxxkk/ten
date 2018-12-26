@@ -1,3 +1,4 @@
+/*
 package huang.yong.chang.config;
 
 import huang.yong.chang.service.impl.LoginUserServiceImpl;
@@ -23,9 +24,11 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 import javax.sql.DataSource;
 
+*/
 /**
  * spring security配置类
- */
+ *//*
+
 
 @Configuration
 @EnableWebSecurity
@@ -36,7 +39,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     private DataSource dataSource;
 
     //@Value("${authority.nologinUrl}")
-    private static final String[] urls = {"/user/checkUser","/user/chagePwdNoLogin"};
+    private static final String[] urls = {"/user/checkUser","/user/chagePwdNoLogin","/user/save"};
 
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
@@ -52,20 +55,27 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         return new MyAuthenticationProvider();
     }
 
-    /**
+    */
+/**
      * 自定义校验规则
      *
      * @param auth
      * @throws Exception
-     */
+     *//*
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+*/
 /*        auth.userDetailsService(loginUserService()).passwordEncoder(new PasswordEncoder() {
-            *//**
+            *//*
+*/
+/**
              * md5加密校对
              * @param charSequence
              * @return
              *//*
+*/
+/*
             @Override
             public String encode(CharSequence charSequence) {
                 return MD5Util.encode((String) charSequence);
@@ -75,30 +85,39 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
             public boolean matches(CharSequence charSequence, String encodedPassword) {
                 return encodedPassword.equals(MD5Util.encode((String) charSequence));
             }
-        });*/
+        });*//*
+
 
         auth.authenticationProvider(authenticationProvider());
     }
 
-   /* @Bean
+   */
+/* @Bean
     public static NoOpPasswordEncoder passwordEncoder() {
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-    }*/
+    }*//*
+
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-       /* http.authorizeRequests().antMatchers("/").permitAll().anyRequest().authenticated()
+       */
+/* http.authorizeRequests().antMatchers("/**").permitAll().anyRequest().authenticated()
                 .and()
-                .logout().permitAll()
+               *//*
+*/
+/* .logout().permitAll()
                 .and()
                 .formLogin()
-                .and()
-                .csrf().disable();*/
+                .and()*//*
+*/
+/*
+                .csrf().disable();*//*
+
         http.authorizeRequests().antMatchers(urls).permitAll().anyRequest().authenticated()
                 .and()
-                .formLogin()//.loginPage("http://www.baidu.com")
-                .defaultSuccessUrl("/swagger-ui.html",true).failureHandler(authenticationFailureHandler)      //  定义当需要用户登录时候，转到的登录页面。
+                .formLogin().loginPage("/login.html")
+                .defaultSuccessUrl("/swagger-ui.html").failureHandler(authenticationFailureHandler)      //  定义当需要用户登录时候，转到的登录页面。
                 .and()
                 .authorizeRequests()        // 定义哪些URL需要被保护、哪些不需要被保护
                 .anyRequest().authenticated()             // 任何请求,登录后可以访问
@@ -108,10 +127,12 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().and().rememberMe().tokenValiditySeconds(10).rememberMeServices(rememberMeServices()).key("INTERNAL_SECRET_KEY");
     }
 
-    /*@Override
+    */
+/*@Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/user/checkUser");
-    }*/
+    }*//*
+
 
     @Bean
     public RememberMeServices rememberMeServices() {
@@ -123,3 +144,4 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         return persistentTokenBasedRememberMeServices;
     }
 }
+*/

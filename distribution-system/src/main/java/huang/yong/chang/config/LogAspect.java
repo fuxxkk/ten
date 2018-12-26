@@ -1,5 +1,6 @@
 package huang.yong.chang.config;
 
+import huang.yong.chang.entity.User;
 import huang.yong.chang.util.ContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -32,7 +33,12 @@ public class LogAspect {
 
     @Before(value = "recordlog()")
     public void beforeLog(JoinPoint joinPoint) {
-        String username = ContextUtils.getUser().getUsername();
+        User user = ContextUtils.getUser();
+        String username = "";
+        if (user != null) {
+            username = user.getUsername();
+
+        }
         startTime.set(System.currentTimeMillis());
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
