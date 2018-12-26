@@ -9,6 +9,8 @@ import huang.yong.chang.entity.request.UserPageRequest;
 import huang.yong.chang.entity.request.UserVO;
 import huang.yong.chang.excep.SystemException;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService extends BaseService<User> {
@@ -74,4 +76,12 @@ public interface UserService extends BaseService<User> {
      */
     Boolean isLogin();
 
+    /**
+     * 退出登录
+     * @return
+     */
+    Boolean logout();
+
+
+    void getQr(HttpServletResponse response) throws  Exception;
 }

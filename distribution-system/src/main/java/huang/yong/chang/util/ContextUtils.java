@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 public class ContextUtils {
 
-    private final static String SESSIONNAME = "session_user";
+    public final static String SESSIONNAME = "session_user";
 
     public static User getUser() {
         return (User) getSession().getAttribute(SESSIONNAME);

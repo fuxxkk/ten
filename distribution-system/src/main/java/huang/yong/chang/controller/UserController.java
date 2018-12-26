@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("user")
 @Api(tags = "用户管理")
@@ -85,5 +87,17 @@ public class UserController {
     @ApiOperation(value = "登录")
     public Result login(@RequestBody User user) throws SystemException {
         return Result.SUCCESS(userService.login(user));
+    }
+
+    @GetMapping("logout")
+    @ApiOperation(value = "退出登录")
+    public Result logout() {
+        return Result.SUCCESS(userService.logout());
+    }
+
+    @GetMapping("getQr")
+    @ApiOperation(value = "获取当前登录用户二维码")
+    public void getQr(HttpServletResponse response) throws Exception {
+        userService.getQr(response);
     }
 }

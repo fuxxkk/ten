@@ -17,6 +17,7 @@ import huang.yong.chang.service.*;
 import huang.yong.chang.util.ContextUtils;
 import huang.yong.chang.util.IdUtil;
 import huang.yong.chang.util.MD5Util;
+import huang.yong.chang.util.QrCodeUtils;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -50,7 +53,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         if (one == null) {
             throw new SystemException("用户名或密码错误！");
         }
-        ContextUtils.setUser(user);
+        ContextUtils.setUser(one);
         return true;
     }
 
@@ -200,6 +203,19 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
     @Override
     public Boolean isLogin() {
         return ContextUtils.getUser() == null ? false : true;
+    }
+
+    @Override
+    public Boolean logout() {
+        ContextUtils.getSession().removeAttribute(ContextUtils.SESSIONNAME);
+        return true;
+    }
+
+    @Override
+    public void getQr(HttpServletResponse response) throws Exception {
+        User user = ContextUtils.getUser();
+        Optional.ofNullable(user).orElseThrow(() -> new SystemException("请先登录！"));
+        QrCodeUtils.createQrCode(response.getOutputStream(), "http://156.233.65.171/register.html?pid=" + user.getId(), 900, "JPEG");
     }
 
     @Scheduled(cron = "0/10 * * * * ?")
