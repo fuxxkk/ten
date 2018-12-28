@@ -89,6 +89,7 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
             IntegralRecord pintegralRecord = new IntegralRecord(parentId, brokerage, newDate);
             integralRecordService.save(pintegralRecord);
             //发送消息
+
             UserMsg puserMsg = new UserMsg(parentId, null, null, false, newDate);
             String pcontent = "您的下级联系人（手机号：" + user.getPhone() + "）进行了充值，您得到了佣金："+brokerage+"元，积分："+brokerage+"分。";
             puserMsg.setContent(pcontent);
