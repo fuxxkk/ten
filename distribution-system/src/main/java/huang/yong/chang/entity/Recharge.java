@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import huang.yong.chang.base.BaseEntity;
+import huang.yong.chang.config.DoubleJsonDeserializer;
 import huang.yong.chang.config.LongJsonDeserializer;
 import huang.yong.chang.config.LongJsonSerializer;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class Recharge extends BaseEntity<Recharge> {
 
     //充值金额
     @TableField("recharge_money")
+    @JsonSerialize(using = DoubleJsonDeserializer.class)
     private Double rechargeMoney;
 
     //充值时间

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import huang.yong.chang.base.BaseEntity;
+import huang.yong.chang.config.DoubleJsonDeserializer;
 import huang.yong.chang.config.LongJsonDeserializer;
 import huang.yong.chang.config.LongJsonSerializer;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class BalanceRecord extends BaseEntity<BalanceRecord> {
 
     //余额变动
     @TableField("change_balance")
+    @JsonSerialize(using = DoubleJsonDeserializer.class)
     private Double changeBalance;
 
     @TableField("modify_date")
