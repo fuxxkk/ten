@@ -18,6 +18,7 @@ public class Role extends BaseEntity<Role> {
     private String roleName;
 
     @TableField("create_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
 
     @TableField("modify_date")
