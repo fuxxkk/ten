@@ -11,18 +11,5 @@ public class DistributionApplication {
         SpringApplication.run(DistributionApplication.class, args);
         System.out.println("http://localhost:8080/swagger-ui.html");
         System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-        System.out.println("http://156.233.65.171:8088");
-
     }
 }
