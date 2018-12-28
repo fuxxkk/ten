@@ -32,7 +32,7 @@ public class RechargeController {
 
     @GetMapping("setConfirm")
     @ApiOperation(value = "确认充值")
-    public Result setConfirm(Long rechargeId) {
-        return Result.SUCCESS(rechargeService.setComfirmById(rechargeId));
+    public Result setConfirm(Long rechargeId,Double percent) {
+        return Result.SUCCESS(rechargeService.setComfirmById(rechargeId,percent));
     }
 }

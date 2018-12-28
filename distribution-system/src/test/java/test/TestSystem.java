@@ -66,7 +66,7 @@ public class TestSystem {
                 527999557998104576l};
         for (long s :
                 ls) {
-            rechargeService.setComfirmById(s);
+            rechargeService.setComfirmById(s,0.2);
             
         }
     }

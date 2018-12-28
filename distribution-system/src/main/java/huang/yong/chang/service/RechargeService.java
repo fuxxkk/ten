@@ -27,5 +27,5 @@ public interface RechargeService extends BaseService<Recharge> {
      * @param id
      * @return
      */
-    Boolean setComfirmById(Long id);
+    Boolean setComfirmById(Long id,Double percent);
 }

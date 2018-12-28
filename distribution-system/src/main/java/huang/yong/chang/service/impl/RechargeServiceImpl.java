@@ -38,7 +38,7 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
         User user;
         if (recharge.getUserId() == null) {
             user = ContextUtils.getUser();
-        }else {
+        } else {
             user = userService.selectOne(recharge.getUserId());
         }
         recharge.setUserId(user.getId());
@@ -67,28 +67,49 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
     }
 
     @Override
-    public Boolean setComfirmById(Long id) {
+    public Boolean setComfirmById(Long id, Double percent) {
         //查询出该条充值记录的信息
         Recharge rechargeFromMsg = selectOne(id);
         //更改用户余额
         balanceService.updateUserBalance(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney());
-        //todo 抽佣
+        //查出父级
+        User user = userService.selectOne(rechargeFromMsg.getUserId());
+        Long parentId = user.getParentId();
+        Date newDate = new Date();
+        //如果存在父级联系人
+        if (parentId != null && parentId != 0) {
+            //佣金和积分
+            double brokerage = rechargeFromMsg.getRechargeMoney() * percent;
+            //更改佣金和积分以及记录
+            balanceService.updateUserBalance(parentId, brokerage);
+            integralService.updateUserIntegral(parentId, brokerage);
+
+            BalanceRecord pbalanceRecord = new BalanceRecord(parentId, brokerage, newDate);
+            balanceRecordService.save(pbalanceRecord);
+            IntegralRecord pintegralRecord = new IntegralRecord(parentId, brokerage, newDate);
+            integralRecordService.save(pintegralRecord);
+            //发送消息
+            UserMsg puserMsg = new UserMsg(parentId, null, null, false, newDate);
+            String pcontent = "您的下级联系人（手机号：" + user.getPhone() + "）进行了充值，您得到了佣金："+brokerage+"元，积分："+brokerage+"分。";
+            puserMsg.setContent(pcontent);
+            userMsgService.save(puserMsg);
+        }
+
 
         //增加余额记录
-        BalanceRecord balanceRecord = new BalanceRecord(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney(), new Date());
+        BalanceRecord balanceRecord = new BalanceRecord(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney(), newDate);
         balanceRecordService.save(balanceRecord);
         //更改用户积分
         integralService.updateUserIntegral(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney());
         //增加积分记录
-        IntegralRecord integralRecord = new IntegralRecord(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney(), new Date());
+        IntegralRecord integralRecord = new IntegralRecord(rechargeFromMsg.getUserId(), rechargeFromMsg.getRechargeMoney(), newDate);
         integralRecordService.save(integralRecord);
 
         //给充值用户发消息
-        UserMsg userMsg = new UserMsg(rechargeFromMsg.getUserId(), null, null, false, new Date());
-        String content = "管理员已对你的充值，充值金额：" + rechargeFromMsg.getRechargeMoney()+" 进行了确认。";
+        UserMsg userMsg = new UserMsg(rechargeFromMsg.getUserId(), null, null, false, newDate);
+        String content = "管理员已对你的充值，充值金额：" + rechargeFromMsg.getRechargeMoney() + " 进行了确认。";
         userMsg.setContent(content);
         userMsgService.save(userMsg);
-        //todo 给父级消息
 
         rechargeFromMsg.setIsConfirm(true);
         return update(rechargeFromMsg);
