@@ -10,5 +10,7 @@ public class DistributionApplication {
     public static void main(String[] args) {
         SpringApplication.run(DistributionApplication.class, args);
         System.out.println("http://localhost:8080/swagger-ui.html");
+        System.out.println("http://156.233.65.171:8088");
+
     }
 }
