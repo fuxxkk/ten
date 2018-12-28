@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import huang.yong.chang.config.LongJsonDeserializer;
 import huang.yong.chang.config.LongJsonSerializer;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -47,6 +48,7 @@ public class DeleteUser implements Serializable {
     private String alipayName;
 
     @TableField("delete_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date deleteDate;
 
 

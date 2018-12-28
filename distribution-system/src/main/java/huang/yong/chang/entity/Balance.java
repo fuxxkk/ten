@@ -8,6 +8,7 @@ import huang.yong.chang.base.BaseEntity;
 import huang.yong.chang.config.LongJsonDeserializer;
 import huang.yong.chang.config.LongJsonSerializer;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -36,6 +37,7 @@ public class Balance extends BaseEntity<Balance> {
     private Double balance;
 
     @TableField("modify_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifyDate;
 
 }
