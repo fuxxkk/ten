@@ -3,6 +3,7 @@ package huang.yong.chang.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -105,10 +106,19 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
 
     @Override
     public Boolean updateUser(User user) throws SystemException {
-        User byNameNqId = findByNameNqId(user.getUsername(), user.getId());
-        if (byNameNqId != null) {
-            throw new SystemException("用户名已重复！");
+
+        if (StringUtils.isNotEmpty(user.getUsername()) && user.getId() != null) {
+            User byNameNqId = findByNameNqId(user.getUsername(), user.getId());
+            if (byNameNqId != null) {
+                throw new SystemException("用户名已重复！");
+            }
         }
+        if (user.getId()==null) {
+            User loginUser = ContextUtils.getUser();
+            Optional.ofNullable(loginUser).orElseThrow(() -> new SystemException("请登录后操作"));
+            user.setId(loginUser.getId());
+        }
+
         user.setModifyDate(new Date());
 
         return super.update(user);
