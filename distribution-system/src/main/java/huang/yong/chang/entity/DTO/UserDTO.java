@@ -21,4 +21,7 @@ public class UserDTO {
     //团队总余额
     @JsonSerialize(using = DoubleJsonDeserializer.class)
     private Double totalBalance;
+
+    //团队总人数
+    private Integer totalMemberCount;
 }

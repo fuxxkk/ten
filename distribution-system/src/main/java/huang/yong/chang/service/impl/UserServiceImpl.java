@@ -113,7 +113,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
                 throw new SystemException("用户名已重复！");
             }
         }
-        if (user.getId()==null) {
+        if (user.getId() == null) {
             User loginUser = ContextUtils.getUser();
             Optional.ofNullable(loginUser).orElseThrow(() -> new SystemException("请登录后操作"));
             user.setId(loginUser.getId());
@@ -167,6 +167,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         }
         Double totalBalance = getTotalBalance(userDTO, 0);
         userDTO.setTotalBalance(totalBalance);
+        Integer totalMemberCount = getTotalMemberCount(userDTO, 1);
+        userDTO.setTotalMemberCount(totalMemberCount);
         return userDTO;
     }
 
@@ -246,6 +248,31 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         if (CollectionUtils.isNotEmpty(users)) {
             for (UserDTO user : users) {
                 sum = getTotalBalance(user, sum);
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * 获取当前用户团队总人数
+     *
+     * @param userDTO
+     * @param sum
+     * @return
+     */
+    private Integer getTotalMemberCount(UserDTO userDTO, int sum) {
+        int count;
+        List<UserDTO> users = userDTO.getUsers();
+        if (users == null) {
+            count = 0;
+        } else {
+            count = users.size();
+        }
+
+        sum += count;
+        if (CollectionUtils.isNotEmpty(users)) {
+            for (UserDTO user : users) {
+                sum = getTotalMemberCount(user, sum);
             }
         }
         return sum;
