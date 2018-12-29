@@ -121,7 +121,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
 
         user.setModifyDate(new Date());
 
-        return super.update(user);
+        Boolean update = super.update(user);
+       /* if (update) {
+            ContextUtils.setUser(selectOne(user.getId()));
+        }*/
+        return update;
     }
 
     @Override
