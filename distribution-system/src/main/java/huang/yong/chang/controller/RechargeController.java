@@ -20,7 +20,7 @@ public class RechargeController {
     private RechargeService rechargeService;
 
     @PostMapping("rechage")
-    @ApiOperation(value = "用户充值")
+    @ApiOperation(value = "用户充值或提现（正数为充值，负数为提现）")
     public Result rechage(@RequestBody Recharge recharge) throws SystemException {
         return Result.SUCCESS(rechargeService.rechage(recharge));
     }
@@ -32,7 +32,7 @@ public class RechargeController {
     }
 
     @GetMapping("setConfirm")
-    @ApiOperation(value = "确认充值，第一个参数是充值ID，第二个参数是佣金比例11111")
+    @ApiOperation(value = "确认充值或提现，第一个参数是充值或提现ID，第二个参数是佣金比例，默认20%（提现时可以不填，填了无效）")
     public Result setConfirm(Long rechargeId,@RequestParam(required = false) Double percent) {
         return Result.SUCCESS(rechargeService.setComfirmById(rechargeId,percent));
     }

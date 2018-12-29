@@ -100,6 +100,9 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
         Date newDate = new Date();
         //如果存在父级联系人
         if (parentId != null && parentId != 0 && rechargeMoney > 0) {
+            if (percent == null || percent == 0) {
+                percent = 0.2;
+            }
             //佣金和积分
             double brokerage = rechargeMoney * percent;
             String brokerageFormat = df.format(brokerage);
