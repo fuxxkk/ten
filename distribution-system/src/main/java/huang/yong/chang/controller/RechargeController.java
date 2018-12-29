@@ -4,6 +4,7 @@ import huang.yong.chang.base.Result;
 import huang.yong.chang.entity.Recharge;
 import huang.yong.chang.entity.request.RechargePageRequest;
 import huang.yong.chang.entity.request.UserMsgPageRequest;
+import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.service.RechargeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +21,7 @@ public class RechargeController {
 
     @PostMapping("rechage")
     @ApiOperation(value = "用户充值")
-    public Result rechage(@RequestBody Recharge recharge)  {
+    public Result rechage(@RequestBody Recharge recharge) throws SystemException {
         return Result.SUCCESS(rechargeService.rechage(recharge));
     }
 
@@ -32,7 +33,7 @@ public class RechargeController {
 
     @GetMapping("setConfirm")
     @ApiOperation(value = "确认充值，第一个参数是充值ID，第二个参数是佣金比例11111")
-    public Result setConfirm(Long rechargeId,Double percent) {
+    public Result setConfirm(Long rechargeId,@RequestParam(required = false) Double percent) {
         return Result.SUCCESS(rechargeService.setComfirmById(rechargeId,percent));
     }
 }

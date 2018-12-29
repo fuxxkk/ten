@@ -3,6 +3,7 @@ package test;
 import huang.DistributionApplication;
 import huang.yong.chang.entity.Recharge;
 import huang.yong.chang.entity.User;
+import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.service.RechargeService;
 import huang.yong.chang.service.UserService;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class TestSystem {
 
     @Test
    //33333
-    public void recharge() {
+    public void recharge() throws SystemException {
         Recharge recharge = new Recharge();
         recharge.setUserId(527592008828211200L);
         for (int i = 20; i < 40; i++) {
