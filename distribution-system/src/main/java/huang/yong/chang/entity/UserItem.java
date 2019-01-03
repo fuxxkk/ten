@@ -15,6 +15,15 @@ import java.util.Date;
 @Data
 public class UserItem extends BaseEntity<UserItem> {
 
+    public UserItem(Long userId, Long itemId, Date createDate) {
+        this.userId = userId;
+        this.itemId = itemId;
+        this.createDate = createDate;
+    }
+
+    public UserItem() {
+    }
+
     @TableField("user_id")
     private Long userId;
 
