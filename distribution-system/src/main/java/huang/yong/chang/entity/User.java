@@ -51,9 +51,8 @@ public class User extends BaseEntity<User> implements  Serializable {
     @TableField("uesr_level")
     private Integer uesrLevel;
 
-    @TableField("is_deleted")
-    @ApiModelProperty(hidden = true)
-    private Boolean isDeteleted;
+    @TableField("is_new")
+    private Boolean isNew; //是否新用户 0是 1否（用于邀请返佣）
 
     @TableField(exist = false)
     private List<Role> roles;
