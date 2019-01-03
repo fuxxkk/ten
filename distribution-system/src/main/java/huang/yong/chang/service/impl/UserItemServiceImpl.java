@@ -3,9 +3,11 @@ package huang.yong.chang.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.entity.Balance;
+import huang.yong.chang.entity.DTO.UserItemDTO;
 import huang.yong.chang.entity.Item;
 import huang.yong.chang.entity.User;
 import huang.yong.chang.entity.UserItem;
+import huang.yong.chang.entity.request.UserItemPageRequest;
 import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.mapper.UserItemMapper;
 import huang.yong.chang.service.BalanceRecordService;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,10 +65,28 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         UserItem userItem = new UserItem(user.getId(), itemId, new Date());
         save(userItem);
 
-        //邀请返佣
+        //todo 邀请返佣
+            //判断是否新用户
+        if (user.getIsNew()) {
 
-        //购买返佣
+        }
+
 
         return true;
     }
+
+    @Override
+    public List<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) {
+        return null;
+    }
+
+    //todo 购买返佣
+
+
+    //邀请返佣
+    private void inviteReturn(User user) {
+
+    }
+
+
 }
