@@ -21,5 +21,5 @@ public interface UserItemService extends BaseService<UserItem> {
      * @param userItemPageRequest
      * @return
      */
-    List<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest);
+    List<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException;
 }

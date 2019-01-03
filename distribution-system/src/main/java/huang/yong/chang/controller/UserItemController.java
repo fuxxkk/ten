@@ -3,6 +3,7 @@ package huang.yong.chang.controller;
 import huang.yong.chang.base.Result;
 import huang.yong.chang.entity.Item;
 import huang.yong.chang.entity.request.ItemPageRequest;
+import huang.yong.chang.entity.request.UserItemPageRequest;
 import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.service.ItemService;
 import huang.yong.chang.service.UserItemService;
@@ -27,10 +28,9 @@ public class UserItemController {
         return Result.SUCCESS(userItemService.buyItem(itemId));
     }
 
-    /* @PostMapping("findPage")
+     @PostMapping("findPage")
     @ApiOperation(value = "分页查询商品")
-    public Result findPage(@RequestBody ItemPageRequest itemPageRequest) {
-        itemPageRequest.setPage(itemPageRequest.getPage()-1);
-        return Result.SUCCESS(itemService.findPage(itemPageRequest));
-    }*/
+    public Result findPage(@RequestBody UserItemPageRequest userItemPageRequest) throws SystemException {
+        return Result.SUCCESS(userItemService.findPage(userItemPageRequest));
+    }
 }

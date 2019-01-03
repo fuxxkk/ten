@@ -7,4 +7,6 @@ import lombok.Data;
 public class UserItemPageRequest  extends PageRequest {
 
     private String itemName;
+
+    private Long userId;
 }

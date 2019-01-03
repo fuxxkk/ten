@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="huang.yong.chang.mapper.UserItemMapper">
+    <select id="findPage" resultType="huang.yong.chang.entity.UserItem"
+            parameterType="huang.yong.chang.entity.request.UserItemPageRequest">
+        select * from tb_user_item where user_id=#{userId}
+        <if test="itemName != null and itemName !=''">
+            and item_id in (select id from tb_item where name like  CONCAT('%',#{itemName},'%'))
+        </if>
+        <if test="orderBy!=null and orderBy !=''">
+            ORDER BY ${orderBy}
+        </if>
+        limit #{page},#{pageSize}
+    </select>
+</mapper>

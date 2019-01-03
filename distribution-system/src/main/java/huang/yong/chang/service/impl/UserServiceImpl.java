@@ -236,6 +236,28 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         QrCodeUtils.createQrCode(response.getOutputStream(), "http://156.233.65.171/register.html?pid=" + user.getId(), 900, "JPEG");
     }
 
+    @Override
+    public Boolean adminLogin(User user) throws SystemException {
+        QueryWrapper<User> wrapper = new QueryWrapper<User>();
+        wrapper.eq("username", user.getUsername()).eq("password", MD5Util.encode(user.getPassword()));
+        User one = mapper.selectOne(wrapper);
+        if (one == null) {
+            throw new SystemException("用户名或密码错误！");
+        }
+        List<Role> roles = roleService.findByUserId(one.getId());
+        boolean flag = true;
+        for (Role role : roles) {
+            if (role.getId().equals(1)) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            throw new SystemException("该用户不是管理员！");
+        }
+        return true;
+    }
+
     @Scheduled(cron = "0/10 * * * * ?")
     private void init() {
         map.clear();

@@ -1,6 +1,7 @@
 package huang.yong.chang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.google.common.collect.Lists;
 import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.entity.Balance;
 import huang.yong.chang.entity.DTO.UserItemDTO;
@@ -15,9 +16,13 @@ import huang.yong.chang.service.BalanceService;
 import huang.yong.chang.service.ItemService;
 import huang.yong.chang.service.UserItemService;
 import huang.yong.chang.util.ContextUtils;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -76,8 +81,24 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
     }
 
     @Override
-    public List<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) {
-        return null;
+    public List<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException {
+        User user = ContextUtils.getUser();
+        Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录够再操作"));
+        userItemPageRequest.setUserId(user.getId());
+        userItemPageRequest.setPage(userItemPageRequest.getPage()-1);
+        List<UserItem> pageList = mapper.findPage(userItemPageRequest);
+        Iterable<UserItemDTO> userItemDTOS = Observable.fromIterable(pageList).observeOn(Schedulers.io()).map(x -> {
+            Item item = itemService.selectOne(x.getItemId());
+            UserItemDTO userItemDTO = new UserItemDTO();
+            userItemDTO.setBuyDate(x.getCreateDate());
+            userItemDTO.setItem(item);
+            userItemDTO.setStatus(x.getStatus());
+            Integer m = item.getCycle();
+            Integer s = x.getCurrentDay();
+            userItemDTO.setProgress(s + "/" + m);
+            return userItemDTO;
+        }).blockingIterable();
+        return Lists.newArrayList(userItemDTOS);
     }
 
     //todo 购买返佣

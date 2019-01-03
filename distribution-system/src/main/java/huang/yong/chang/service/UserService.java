@@ -84,4 +84,11 @@ public interface UserService extends BaseService<User> {
 
 
     void getQr(HttpServletResponse response) throws  Exception;
+
+    /**
+     * 管理员登录
+     * @param user
+     * @return
+     */
+    Boolean adminLogin(User user) throws SystemException;
 }

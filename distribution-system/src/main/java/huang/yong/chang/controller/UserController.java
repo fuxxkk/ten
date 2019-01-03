@@ -89,6 +89,12 @@ public class UserController {
         return Result.SUCCESS(userService.login(user));
     }
 
+    @PostMapping("adminLogin")
+    @ApiOperation(value = "管理员登录")
+    public Result adminLogin(@RequestBody User user) throws SystemException {
+        return Result.SUCCESS(userService.adminLogin(user));
+    }
+
     @GetMapping("logout")
     @ApiOperation(value = "退出登录")
     public Result logout() {
