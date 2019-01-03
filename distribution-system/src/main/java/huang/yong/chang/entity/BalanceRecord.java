@@ -39,4 +39,7 @@ public class BalanceRecord extends BaseEntity<BalanceRecord> {
     @TableField("modify_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifyDate;
+
+    @TableField("from")
+    private String from;
 }
