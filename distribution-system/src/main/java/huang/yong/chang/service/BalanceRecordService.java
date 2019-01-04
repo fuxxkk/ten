@@ -1,5 +1,6 @@
 package huang.yong.chang.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import huang.yong.chang.base.BaseService;
 import huang.yong.chang.entity.BalanceRecord;
 import huang.yong.chang.entity.request.BalanceRecordPageRequest;
@@ -13,5 +14,5 @@ public interface BalanceRecordService extends BaseService<BalanceRecord> {
      * @param balanceRecordPageRequest
      * @return
      */
-    List<BalanceRecord> findByUserId(BalanceRecordPageRequest balanceRecordPageRequest);
+    IPage<BalanceRecord> findByUserId(BalanceRecordPageRequest balanceRecordPageRequest);
 }

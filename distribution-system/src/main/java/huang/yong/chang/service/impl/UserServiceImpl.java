@@ -143,7 +143,6 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         if (Stringu) {
         }*/
-        userPageRequest.setPage(userPageRequest.getPage() - 1);
         List<User> users = mapper.findPage(userPageRequest);
         return users;
     }

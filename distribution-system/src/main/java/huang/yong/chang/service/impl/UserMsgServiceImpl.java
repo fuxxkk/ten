@@ -31,7 +31,6 @@ public class UserMsgServiceImpl extends BaseServiceImpl<UserMsg, UserMsgMapper> 
         if (userMsgPageRequest.getUserId() == null) {
             userMsgPageRequest.setUserId(ContextUtils.getUser().getId());
         }
-        userMsgPageRequest.setPage(userMsgPageRequest.getPage() - 1);
         List<UserMsg> userMsgs = mapper.findByUserId(userMsgPageRequest);
         return userMsgs;
     }

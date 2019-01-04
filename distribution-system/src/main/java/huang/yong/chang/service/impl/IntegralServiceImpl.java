@@ -29,7 +29,6 @@ public class IntegralServiceImpl extends BaseServiceImpl<Integral, IntegralMappe
 
     @Override
     public List<Integral> findPage(PageRequest pageRequest) {
-        pageRequest.setPage(pageRequest.getPage()-1);
         return mapper.findPage(pageRequest);
     }
 

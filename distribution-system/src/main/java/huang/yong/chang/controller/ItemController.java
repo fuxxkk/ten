@@ -53,7 +53,6 @@ public class ItemController {
     @PostMapping("findPage")
     @ApiOperation(value = "分页查询商品")
     public Result findPage(@RequestBody ItemPageRequest itemPageRequest) {
-        itemPageRequest.setPage(itemPageRequest.getPage()-1);
         return Result.SUCCESS(itemService.findPage(itemPageRequest));
     }
 }

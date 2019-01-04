@@ -118,7 +118,6 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         User user = ContextUtils.getUser();
         Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录够再操作"));
         userItemPageRequest.setUserId(user.getId());
-        userItemPageRequest.setPage(userItemPageRequest.getPage() - 1);
         List<UserItem> pageList = mapper.findPage(userItemPageRequest);
         Iterable<UserItemDTO> userItemDTOS = Observable.fromIterable(pageList).observeOn(Schedulers.io()).map(x -> {
             Item item = itemService.selectOne(x.getItemId());

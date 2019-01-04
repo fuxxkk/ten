@@ -80,7 +80,6 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
         if (rechargePageRequest.getUserId() == null) {
             rechargePageRequest.setUserId(ContextUtils.getUser().getId());
         }
-        rechargePageRequest.setPage(rechargePageRequest.getPage() - 1);
         return mapper.findByUserId(rechargePageRequest);
     }
 

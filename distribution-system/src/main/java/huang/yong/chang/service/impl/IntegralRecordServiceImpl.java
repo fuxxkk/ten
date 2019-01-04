@@ -20,7 +20,6 @@ public class IntegralRecordServiceImpl extends BaseServiceImpl<IntegralRecord, I
         if (integralRecordPageRequest.getUserId()==null) {
             integralRecordPageRequest.setUserId(ContextUtils.getUser().getId());
         }
-        integralRecordPageRequest.setPage(integralRecordPageRequest.getPage()-1);
         return mapper.findPageByUserId(integralRecordPageRequest);
     }
 }
