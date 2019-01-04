@@ -17,11 +17,14 @@ import java.util.Date;
 @TableName("tb_balance_record")
 public class BalanceRecord extends BaseEntity<BalanceRecord> {
 
-    public BalanceRecord(Long userId, Double changeBalance, Date modifyDate) {
+    public BalanceRecord(Long userId, Double changeBalance, Date modifyDate,String source) {
         this.userId = userId;
         this.changeBalance = changeBalance;
         this.modifyDate = modifyDate;
+        this.source = source;
     }
+
+
 
     public BalanceRecord() {
     }
@@ -40,6 +43,6 @@ public class BalanceRecord extends BaseEntity<BalanceRecord> {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifyDate;
 
-    @TableField("from")
-    private String from;
+    @TableField("source")
+    private String source;
 }

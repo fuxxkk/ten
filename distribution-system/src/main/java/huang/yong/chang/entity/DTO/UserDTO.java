@@ -1,9 +1,11 @@
 package huang.yong.chang.entity.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import huang.yong.chang.config.DoubleJsonDeserializer;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -12,6 +14,8 @@ public class UserDTO {
     private String alipayAccount;
     private String alipayName;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createDate;
     //余额
     @JsonSerialize(using = DoubleJsonDeserializer.class)
     private Double balance;

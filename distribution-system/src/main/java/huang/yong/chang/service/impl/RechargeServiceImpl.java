@@ -92,12 +92,12 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
 
         Double rechargeMoney = rechargeFromMsg.getRechargeMoney();
         String rechargeMoneyFormat = df.format(rechargeMoney);
+        Date newDate = new Date();
 
 
-        //查出父级
+        /*//查出父级
         User user = userService.selectOne(rechargeFromMsg.getUserId());
         Long parentId = user.getParentId();
-        Date newDate = new Date();
         //如果存在父级联系人
         if (parentId != null && parentId != 0 && rechargeMoney > 0) {
             if (percent == null || percent == 0) {
@@ -110,7 +110,7 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
             balanceService.updateUserBalance(parentId, brokerage);
             integralService.updateUserIntegral(parentId, brokerage);
 
-            BalanceRecord pbalanceRecord = new BalanceRecord(parentId, brokerage, newDate);
+            BalanceRecord pbalanceRecord = new BalanceRecord(parentId, brokerage, newDate,user.getPhone()+"充值");
             balanceRecordService.save(pbalanceRecord);
             IntegralRecord pintegralRecord = new IntegralRecord(parentId, brokerage, newDate);
             integralRecordService.save(pintegralRecord);
@@ -120,11 +120,12 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
             String pcontent = String.format(UserMsgContent.BROKEREMSG, user.getAlipayName(), user.getPhone(), brokerageFormat, brokerageFormat);
             puserMsg.setContent(pcontent);
             userMsgService.save(puserMsg);
-        }
+        }*/
         //更改用户余额
         balanceService.updateUserBalance(rechargeFromMsg.getUserId(), rechargeMoney);
         //增加余额记录
-        BalanceRecord balanceRecord = new BalanceRecord(rechargeFromMsg.getUserId(), rechargeMoney, newDate);
+        String from = rechargeMoney > 0 ? "用户充值" : "用户提现";
+        BalanceRecord balanceRecord = new BalanceRecord(rechargeFromMsg.getUserId(), rechargeMoney, newDate,from);
         balanceRecordService.save(balanceRecord);
         //只有充值情况才有积分变动
         if (rechargeMoney > 0) {
@@ -150,4 +151,6 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
         rechargeFromMsg.setIsConfirm(true);
         return update(rechargeFromMsg);
     }
+
+
 }
