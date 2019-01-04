@@ -2,6 +2,7 @@ package huang.yong.chang.service;
 
 import huang.yong.chang.base.BaseService;
 import huang.yong.chang.entity.DTO.UserItemDTO;
+import huang.yong.chang.entity.User;
 import huang.yong.chang.entity.UserItem;
 import huang.yong.chang.entity.request.UserItemPageRequest;
 import huang.yong.chang.excep.SystemException;
@@ -22,4 +23,6 @@ public interface UserItemService extends BaseService<UserItem> {
      * @return
      */
     List<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException;
+
+    void getUserLevelList(User user, List<Long> list);
 }

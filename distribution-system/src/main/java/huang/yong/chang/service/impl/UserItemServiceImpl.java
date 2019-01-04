@@ -3,18 +3,12 @@ package huang.yong.chang.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Lists;
 import huang.yong.chang.base.BaseServiceImpl;
-import huang.yong.chang.entity.Balance;
+import huang.yong.chang.entity.*;
 import huang.yong.chang.entity.DTO.UserItemDTO;
-import huang.yong.chang.entity.Item;
-import huang.yong.chang.entity.User;
-import huang.yong.chang.entity.UserItem;
 import huang.yong.chang.entity.request.UserItemPageRequest;
 import huang.yong.chang.excep.SystemException;
 import huang.yong.chang.mapper.UserItemMapper;
-import huang.yong.chang.service.BalanceRecordService;
-import huang.yong.chang.service.BalanceService;
-import huang.yong.chang.service.ItemService;
-import huang.yong.chang.service.UserItemService;
+import huang.yong.chang.service.*;
 import huang.yong.chang.util.ContextUtils;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
@@ -36,6 +30,8 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
     private ItemService itemService;
     @Autowired
     private BalanceRecordService balanceRecordService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public Boolean buyItem(Long itemId) throws SystemException {
@@ -66,14 +62,47 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
 
         //购买商品，扣减余额，增加商品购买记录
         balanceService.updateUserBalance(user.getId(), -item.getPrice());
+        Date newDate = new Date();
+        BalanceRecord buyRecord = new BalanceRecord(user.getId(), -item.getPrice(), newDate, "购买商品：" + item.getName());
+        balanceRecordService.save(buyRecord);
 
-        UserItem userItem = new UserItem(user.getId(), itemId, new Date());
+        UserItem userItem = new UserItem(user.getId(), itemId, newDate);
         save(userItem);
 
         //todo 邀请返佣
             //判断是否新用户
         if (user.getIsNew()) {
+            List<Long> list = Lists.newArrayList();
+            getUserLevelList(user,list);
 
+            for (int i = 0; i < list.size(); i++) {
+                double money;
+                switch (i){
+                    case 0: //A级返佣
+                        money = 10;
+                        break;
+                    case 1:  //B级返佣
+                        money=5;
+                        break;
+                    case 2:  //C级返佣
+                        money=3;
+                        break;
+                    default:  //D级以上返佣
+                        money=1;
+                        break;
+                }
+                Long parentId = list.get(i);
+                //余额记录
+                String source = "%s 购买 - %d级推荐佣金";
+                BalanceRecord balanceRecord =
+                        new BalanceRecord(parentId, money, newDate, String.format(source, user.getPhone(), i + 1));
+                balanceRecordService.save(balanceRecord);
+                //增加余额
+                balanceService.updateUserBalance(parentId, money);
+            }
+
+            user.setIsNew(false);
+            userService.updateUser(user);
         }
 
 
@@ -104,9 +133,14 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
     //todo 购买返佣
 
 
-    //邀请返佣
-    private void inviteReturn(User user) {
-
+    //用户等级集合
+    public void getUserLevelList(User user,List<Long> list) {
+        Long parentId = user.getParentId();
+        if (parentId != null && parentId != 0) {
+            list.add(parentId);
+            User parent = userService.selectOne(parentId);
+            getUserLevelList(parent,list);
+        }
     }
 
 

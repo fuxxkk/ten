@@ -256,6 +256,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         if (flag) {
             throw new SystemException("该用户不是管理员！");
         }
+        one.setRoles(roles);
+        ContextUtils.setUser(one);
         return true;
     }
 
