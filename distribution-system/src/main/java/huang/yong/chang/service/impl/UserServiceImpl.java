@@ -261,11 +261,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         return true;
     }
 
-    @Scheduled(cron = "0/10 * * * * ?")
-    private void init() {
-        map.clear();
-        log.info("init map....");
-    }
+
 
     private Double getTotalBalance(UserDTO userDTO, double sum) {
         sum += userDTO.getBalance();

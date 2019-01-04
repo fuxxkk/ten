@@ -13,7 +13,9 @@ import huang.yong.chang.util.ContextUtils;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMapper> implements UserItemService {
 
     @Autowired
@@ -41,7 +44,7 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         //查询余额
         Double balance = balanceService.findBalanceByUserId(user.getId());
         Item item = itemService.selectOne(itemId);
-        if (balance-item.getPrice()<0) {
+        if (balance - item.getPrice() < 0) {
             throw new SystemException("您没有足够的余额购买！");
         }
 
@@ -49,14 +52,14 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         QueryWrapper<UserItem> userItemQueryWrapper = new QueryWrapper<>();
         userItemQueryWrapper.eq("user_id", user.getId()).eq("item_id", itemId);
         Integer count = mapper.selectCount(userItemQueryWrapper);
-        if (count>=2) {
+        if (count >= 2) {
             throw new SystemException("您不能购买该商品超过2次！");
         }
 
         //查询用户购买的商品是否在生长周期内
         userItemQueryWrapper.eq("status", 0);
         Integer statusCount = mapper.selectCount(userItemQueryWrapper);
-        if (statusCount>0) {
+        if (statusCount > 0) {
             throw new SystemException("您已存在同样的商品在生长周期内，请待商品生长完再购买！");
         }
 
@@ -72,32 +75,34 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         //判断是否新用户
         if (user.getIsNew()) {
             List<Long> list = Lists.newArrayList();
-            getUserLevelList(user,list);
+            getUserLevelList(user, list);
 
-            for (int i = 0; i < list.size(); i++) {
-                double money;
-                switch (i){
-                    case 0: //A级返佣
-                        money = 10;
-                        break;
-                    case 1:  //B级返佣
-                        money=5;
-                        break;
-                    case 2:  //C级返佣
-                        money=3;
-                        break;
-                    default:  //D级以上返佣
-                        money=1;
-                        break;
+            if (list.size() > 0) {
+                for (int i = 0; i < list.size(); i++) {
+                    double money;
+                    switch (i) {
+                        case 0: //A级返佣
+                            money = 10;
+                            break;
+                        case 1:  //B级返佣
+                            money = 5;
+                            break;
+                        case 2:  //C级返佣
+                            money = 3;
+                            break;
+                        default:  //D级以上返佣
+                            money = 1;
+                            break;
+                    }
+                    Long parentId = list.get(i);
+                    //余额记录
+                    String source = "%s 购买 - %d级推荐佣金";
+                    BalanceRecord balanceRecord =
+                            new BalanceRecord(parentId, money, newDate, String.format(source, user.getPhone(), i + 1));
+                    balanceRecordService.save(balanceRecord);
+                    //增加余额
+                    balanceService.updateUserBalance(parentId, money);
                 }
-                Long parentId = list.get(i);
-                //余额记录
-                String source = "%s 购买 - %d级推荐佣金";
-                BalanceRecord balanceRecord =
-                        new BalanceRecord(parentId, money, newDate, String.format(source, user.getPhone(), i + 1));
-                balanceRecordService.save(balanceRecord);
-                //增加余额
-                balanceService.updateUserBalance(parentId, money);
             }
 
             user.setIsNew(false);
@@ -113,7 +118,7 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         User user = ContextUtils.getUser();
         Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录够再操作"));
         userItemPageRequest.setUserId(user.getId());
-        userItemPageRequest.setPage(userItemPageRequest.getPage()-1);
+        userItemPageRequest.setPage(userItemPageRequest.getPage() - 1);
         List<UserItem> pageList = mapper.findPage(userItemPageRequest);
         Iterable<UserItemDTO> userItemDTOS = Observable.fromIterable(pageList).observeOn(Schedulers.io()).map(x -> {
             Item item = itemService.selectOne(x.getItemId());
@@ -129,18 +134,59 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         return Lists.newArrayList(userItemDTOS);
     }
 
-    //todo 购买返佣
-
-
     //用户等级集合
-    public void getUserLevelList(User user,List<Long> list) {
+    public void getUserLevelList(User user, List<Long> list) {
         Long parentId = user.getParentId();
         if (parentId != null && parentId != 0) {
             list.add(parentId);
             User parent = userService.selectOne(parentId);
-            getUserLevelList(parent,list);
+            getUserLevelList(parent, list);
         }
     }
 
+    /**
+     * 购买返利
+     */
+    @Scheduled(cron = "0 0 0 * * ?") //每天00：00执行
+    public void buyReturn() {
+        log.info("开始执行购买返佣。。。。。");
+        long start = System.currentTimeMillis();
 
+        //查询出状态在返佣中的商品
+        QueryWrapper<UserItem> userItemQueryWrapper = new QueryWrapper<>();
+        userItemQueryWrapper.eq("status", 0);
+        List<UserItem> userItems = mapper.selectList(userItemQueryWrapper);
+        Observable.fromIterable(userItems).observeOn(Schedulers.io()).forEach(userItem -> {
+            Item item = itemService.selectOne(userItem.getItemId());
+            //currentDay+1
+            int currentDay = userItem.getCurrentDay() + 1;
+            userItem.setCurrentDay(currentDay);
+
+            //如果currentDay==cycle 返佣完成
+            if (currentDay == item.getCycle()) {
+                userItem.setStatus(1);
+            }
+
+            //查询商品返佣类型,根据类型返佣
+            Integer type = item.getType();
+            Integer yield = item.getYield(); //返佣金额
+            if (type == 1) { //一次性
+                if (currentDay == item.getCycle()) {
+                    updateBalance(userItem, item, yield);
+                }
+            } else {  //分期
+                updateBalance(userItem, item, yield);
+            }
+            update(userItem);
+        });
+        long end = System.currentTimeMillis();
+        log.info("执行完成，耗时：{} ms。。。。。。", end - start);
+    }
+
+    private void updateBalance(UserItem userItem, Item item, Integer yield) {
+        BalanceRecord balanceRecord =
+                new BalanceRecord(userItem.getUserId(), Double.valueOf(yield + ""), new Date(), "购买 " + item.getName() + " 返佣");
+        balanceRecordService.save(balanceRecord);
+        balanceService.updateUserBalance(userItem.getUserId(), Double.valueOf(yield + ""));
+    }
 }

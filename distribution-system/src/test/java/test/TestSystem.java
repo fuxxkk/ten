@@ -57,7 +57,7 @@ public class TestSystem {
         long[] ls = {527999423742627840l};
         for (long s :
                 ls) {
-            rechargeService.setComfirmById(s,0.2);
+            rechargeService.setComfirmById(s,0.2,2000d);
             
         }
     }
