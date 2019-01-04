@@ -1,5 +1,6 @@
 package huang.yong.chang.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import huang.yong.chang.base.BaseService;
 import huang.yong.chang.entity.UserMsg;
 import huang.yong.chang.entity.request.UserMsgPageRequest;
@@ -20,6 +21,6 @@ public interface UserMsgService extends BaseService<UserMsg> {
      * @param userMsgPageRequest
      * @return
      */
-    List<UserMsg> findByUserId(UserMsgPageRequest userMsgPageRequest);
+    IPage<UserMsg> findByUserId(UserMsgPageRequest userMsgPageRequest);
 
 }

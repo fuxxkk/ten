@@ -1,5 +1,6 @@
 package huang.yong.chang.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import huang.yong.chang.base.BaseService;
 import huang.yong.chang.entity.IntegralRecord;
 import huang.yong.chang.entity.request.IntegralRecordPageRequest;
@@ -13,5 +14,5 @@ public interface IntegralRecordService extends BaseService<IntegralRecord> {
      * @param integralRecordPageRequest
      * @return
      */
-    List<IntegralRecord> findPageByUserId(IntegralRecordPageRequest integralRecordPageRequest);
+    IPage<IntegralRecord> findPageByUserId(IntegralRecordPageRequest integralRecordPageRequest);
 }

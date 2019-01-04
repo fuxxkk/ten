@@ -1,5 +1,6 @@
 package huang.yong.chang.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import huang.yong.chang.base.BaseService;
 import huang.yong.chang.base.PageRequest;
 import huang.yong.chang.entity.Balance;
@@ -45,7 +46,12 @@ public interface UserService extends BaseService<User> {
 
     Boolean deleteUser(Long id);
 
-    List<User> findPage(UserPageRequest userPageRequest);
+    /**
+     * 分页查询
+     * @param userPageRequest
+     * @return
+     */
+    IPage<User> findPage(UserPageRequest userPageRequest);
 
     /**
      * 查看当前用户的

@@ -1,6 +1,9 @@
 package huang.yong.chang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.base.PageRequest;
 import huang.yong.chang.entity.Balance;
@@ -28,8 +31,14 @@ public class IntegralServiceImpl extends BaseServiceImpl<Integral, IntegralMappe
     }
 
     @Override
-    public List<Integral> findPage(PageRequest pageRequest) {
-        return mapper.findPage(pageRequest);
+    public IPage<Integral> findPage(PageRequest pageRequest) {
+        Page<Integral> integralPage = new Page<>(pageRequest.getPage(),pageRequest.getPageSize());
+        QueryWrapper<Integral> integralQueryWrapper = new QueryWrapper<>();
+        if (pageRequest.getIsAsc() != null && StringUtils.isNotEmpty(pageRequest.getOrderByColumn()) ) {
+            integralQueryWrapper.orderBy(true, pageRequest.getIsAsc(), pageRequest.getOrderByColumn());
+        }
+        IPage<Integral> integralIPage = mapper.selectPage(integralPage, integralQueryWrapper);
+        return integralIPage;
     }
 
     @Override

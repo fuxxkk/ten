@@ -26,8 +26,8 @@ public class BalanceRecordServiceImpl extends BaseServiceImpl<BalanceRecord, Bal
         Page<BalanceRecord> balanceRecordPage = new Page<>(balanceRecordPageRequest.getPage(), balanceRecordPageRequest.getPageSize());
         QueryWrapper<BalanceRecord> balanceRecordQueryWrapper = new QueryWrapper<>();
         balanceRecordQueryWrapper.eq("user_id", balanceRecordPageRequest.getUserId());
-        if (balanceRecordPageRequest.getAsc() != null && StringUtils.isNotEmpty(balanceRecordPageRequest.getOrderByColumn()) ) {
-            balanceRecordQueryWrapper.orderBy(true, balanceRecordPageRequest.getAsc(), balanceRecordPageRequest.getOrderByColumn());
+        if (balanceRecordPageRequest.getIsAsc() != null && StringUtils.isNotEmpty(balanceRecordPageRequest.getOrderByColumn()) ) {
+            balanceRecordQueryWrapper.orderBy(true, balanceRecordPageRequest.getIsAsc(), balanceRecordPageRequest.getOrderByColumn());
         }
         IPage<BalanceRecord> recordIPage = mapper.selectPage(balanceRecordPage, balanceRecordQueryWrapper);
         return recordIPage;

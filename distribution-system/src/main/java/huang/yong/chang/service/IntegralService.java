@@ -1,5 +1,6 @@
 package huang.yong.chang.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import huang.yong.chang.base.BaseService;
 import huang.yong.chang.base.PageRequest;
 import huang.yong.chang.entity.Integral;
@@ -21,7 +22,7 @@ public interface IntegralService extends BaseService<Integral> {
      * @param pageRequest
      * @return
      */
-    List<Integral> findPage(PageRequest pageRequest);
+    IPage<Integral> findPage(PageRequest pageRequest);
 
     /**
      * 查询当前用户积分

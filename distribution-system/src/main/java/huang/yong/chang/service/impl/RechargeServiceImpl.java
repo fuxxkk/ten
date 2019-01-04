@@ -1,5 +1,9 @@
 package huang.yong.chang.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.base.UserMsgContent;
 import huang.yong.chang.entity.*;
@@ -76,11 +80,17 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
     }
 
     @Override
-    public List<Recharge> findByUserId(RechargePageRequest rechargePageRequest) {
+    public IPage<Recharge> findByUserId(RechargePageRequest rechargePageRequest) {
         if (rechargePageRequest.getUserId() == null) {
             rechargePageRequest.setUserId(ContextUtils.getUser().getId());
         }
-        return mapper.findByUserId(rechargePageRequest);
+        Page<Recharge> rechargePage = new Page<>(rechargePageRequest.getPage(), rechargePageRequest.getPageSize());
+        QueryWrapper<Recharge> rechargeQueryWrapper = new QueryWrapper<>();
+        rechargeQueryWrapper.eq("user_id", rechargePageRequest.getUserId());
+        if (rechargePageRequest.getIsAsc() != null && StringUtils.isNotEmpty(rechargePageRequest.getOrderByColumn()) ) {
+            rechargeQueryWrapper.orderBy(true, rechargePageRequest.getIsAsc(), rechargePageRequest.getOrderByColumn());
+        }
+        return mapper.selectPage(rechargePage,rechargeQueryWrapper);
     }
 
     @Override

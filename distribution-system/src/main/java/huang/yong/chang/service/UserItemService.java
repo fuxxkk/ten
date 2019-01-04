@@ -1,5 +1,6 @@
 package huang.yong.chang.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import huang.yong.chang.base.BaseService;
 import huang.yong.chang.entity.DTO.UserItemDTO;
 import huang.yong.chang.entity.User;
@@ -22,7 +23,7 @@ public interface UserItemService extends BaseService<UserItem> {
      * @param userItemPageRequest
      * @return
      */
-    List<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException;
+    IPage<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException;
 
     void getUserLevelList(User user, List<Long> list);
 }

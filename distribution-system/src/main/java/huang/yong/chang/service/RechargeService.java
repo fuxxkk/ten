@@ -1,5 +1,6 @@
 package huang.yong.chang.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import huang.yong.chang.base.BaseService;
 import huang.yong.chang.entity.Recharge;
 import huang.yong.chang.entity.request.RechargePageRequest;
@@ -21,7 +22,7 @@ public interface RechargeService extends BaseService<Recharge> {
      * @param rechargePageRequest
      * @return
      */
-    List<Recharge> findByUserId(RechargePageRequest rechargePageRequest);
+    IPage<Recharge> findByUserId(RechargePageRequest rechargePageRequest);
 
     /**
      * 设置成确定充值

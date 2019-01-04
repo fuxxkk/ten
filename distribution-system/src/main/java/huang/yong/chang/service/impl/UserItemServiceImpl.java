@@ -1,6 +1,10 @@
 package huang.yong.chang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import huang.yong.chang.base.BaseServiceImpl;
 import huang.yong.chang.entity.*;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -114,11 +119,28 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
     }
 
     @Override
-    public List<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException {
+    public IPage<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException {
         User user = ContextUtils.getUser();
         Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录够再操作"));
         userItemPageRequest.setUserId(user.getId());
-        List<UserItem> pageList = mapper.findPage(userItemPageRequest);
+
+        //分页
+        Page<UserItem> userItemPage = new Page<>(userItemPageRequest.getPage(), userItemPageRequest.getPageSize());
+        QueryWrapper<UserItem> userItemQueryWrapper = new QueryWrapper<>();
+        userItemQueryWrapper.eq("user_id", userItemPageRequest.getUserId());
+        if (StringUtils.isNotEmpty(userItemPageRequest.getItemName())) {
+            List<Item> items = itemService.findIdsByName(userItemPageRequest.getItemName());
+            if (CollectionUtils.isNotEmpty(items)) {
+                List<Long> ids = items.stream().map(x -> x.getId()).collect(Collectors.toList());
+                userItemQueryWrapper.in("item_id", ids);
+            }
+        }
+        if (userItemPageRequest.getIsAsc() != null && StringUtils.isNotEmpty(userItemPageRequest.getOrderByColumn()) ) {
+            userItemQueryWrapper.orderBy(true, userItemPageRequest.getIsAsc(), userItemPageRequest.getOrderByColumn());
+        }
+
+        IPage userItemIPage = mapper.selectPage(userItemPage, userItemQueryWrapper);
+        List<UserItem> pageList = userItemIPage.getRecords();
         Iterable<UserItemDTO> userItemDTOS = Observable.fromIterable(pageList).observeOn(Schedulers.io()).map(x -> {
             Item item = itemService.selectOne(x.getItemId());
             UserItemDTO userItemDTO = new UserItemDTO();
@@ -130,7 +152,9 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
             userItemDTO.setProgress(s + "/" + m);
             return userItemDTO;
         }).blockingIterable();
-        return Lists.newArrayList(userItemDTOS);
+        List<UserItemDTO> itemDTOS = Lists.newArrayList(userItemDTOS);
+        userItemIPage.setRecords(itemDTOS);
+        return userItemIPage;
     }
 
     //用户等级集合

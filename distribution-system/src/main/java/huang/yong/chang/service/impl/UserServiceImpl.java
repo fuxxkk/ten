@@ -2,6 +2,7 @@ package huang.yong.chang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -138,13 +139,22 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
     }
 
     @Override
-    public List<User> findPage(UserPageRequest userPageRequest) {
-        /*Page<User> userPage = new Page<>(userPageRequest.getPage() - 1, userPageRequest.getPageSize());
+    public IPage<User> findPage(UserPageRequest userPageRequest) {
+        Page<User> userPage = new Page<>(userPageRequest.getPage() - 1, userPageRequest.getPageSize());
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        if (Stringu) {
-        }*/
-        List<User> users = mapper.findPage(userPageRequest);
-        return users;
+        if (StringUtils.isNotEmpty(userPageRequest.getAlipayAccount())) {
+            userQueryWrapper.like("alipay_account", userPageRequest.getAlipayAccount());
+        }
+        if (StringUtils.isNotEmpty(userPageRequest.getAlipayName())) {
+            userQueryWrapper.like("alipay_name", userPageRequest.getAlipayName());
+        }
+        if (StringUtils.isNotEmpty(userPageRequest.getUsername())) {
+            userQueryWrapper.like("username", userPageRequest.getUsername());
+        }
+        if (userPageRequest.getIsAsc() != null && StringUtils.isNotEmpty(userPageRequest.getOrderByColumn()) ) {
+            userQueryWrapper.orderBy(true, userPageRequest.getIsAsc(), userPageRequest.getOrderByColumn());
+        }
+        return mapper.selectPage(userPage,userQueryWrapper);
     }
 
     @Override
