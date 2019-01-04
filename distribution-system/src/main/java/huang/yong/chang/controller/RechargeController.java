@@ -33,7 +33,7 @@ public class RechargeController {
 
     @GetMapping("setConfirm")
     @ApiOperation(value = "确认充值或提现，第一个参数是充值或提现ID，第二个参数是佣金比例，默认20%（提现时可以不填，填了无效）")
-    public Result setConfirm(Long rechargeId,@RequestParam(required = false) Double percent) {
-        return Result.SUCCESS(rechargeService.setComfirmById(rechargeId,percent));
+    public Result setConfirm(Long rechargeId,@RequestParam(required = false) Double percent,Double money) {
+        return Result.SUCCESS(rechargeService.setComfirmById(rechargeId,percent,money));
     }
 }

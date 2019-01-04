@@ -69,8 +69,7 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         UserItem userItem = new UserItem(user.getId(), itemId, newDate);
         save(userItem);
 
-        //todo 邀请返佣
-            //判断是否新用户
+        //判断是否新用户
         if (user.getIsNew()) {
             List<Long> list = Lists.newArrayList();
             getUserLevelList(user,list);

@@ -28,5 +28,6 @@ public interface RechargeService extends BaseService<Recharge> {
      * @param rechargeId
      * @return
      */
-    Boolean setComfirmById(Long rechargeId,Double percent);
+    //todo 添加参数
+    Boolean setComfirmById(Long rechargeId,Double percent,Double money);
 }

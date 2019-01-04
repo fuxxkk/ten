@@ -85,12 +85,12 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
     }
 
     @Override
-    public Boolean setComfirmById(Long rechargeId, Double percent) {
+    public Boolean setComfirmById(Long rechargeId, Double percent,Double money) {
         DecimalFormat df = new DecimalFormat("######0.00");
         //查询出该条充值记录的信息
         Recharge rechargeFromMsg = selectOne(rechargeId);
 
-        Double rechargeMoney = rechargeFromMsg.getRechargeMoney();
+        Double rechargeMoney = money;//rechargeFromMsg.getRechargeMoney();
         String rechargeMoneyFormat = df.format(rechargeMoney);
         Date newDate = new Date();
 
