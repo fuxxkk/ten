@@ -106,4 +106,11 @@ public class UserController {
     public void getQr(HttpServletResponse response) throws Exception {
         userService.getQr(response);
     }
+
+    @GetMapping("adminWechat")
+    @ApiOperation(value = "获取当前admin微信信息")
+    public Result adminWechat(){
+        return Result.SUCCESS(userService.adminWechat());
+
+    }
 }

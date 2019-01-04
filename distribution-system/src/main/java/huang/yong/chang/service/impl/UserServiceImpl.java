@@ -261,6 +261,16 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         return true;
     }
 
+    @Override
+    public Map<String, String> adminWechat() {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("username", "admin");
+        User user = mapper.selectOne(userQueryWrapper);
+        HashMap<String, String> map = Maps.newHashMap();
+        map.put("wechatName", user.getBackup1());
+        map.put("wechatQrUrl", user.getBackup2());
+        return map;
+    }
 
 
     private Double getTotalBalance(UserDTO userDTO, double sum) {

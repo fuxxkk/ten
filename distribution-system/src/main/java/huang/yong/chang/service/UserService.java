@@ -12,6 +12,7 @@ import huang.yong.chang.excep.SystemException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface UserService extends BaseService<User> {
 
@@ -91,4 +92,10 @@ public interface UserService extends BaseService<User> {
      * @return
      */
     Boolean adminLogin(User user) throws SystemException;
+
+    /**
+     * 获取管理员微信信息
+     * @return
+     */
+    Map<String, String> adminWechat();
 }
