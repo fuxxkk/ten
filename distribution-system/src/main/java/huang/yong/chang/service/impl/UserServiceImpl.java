@@ -114,8 +114,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
                 throw new SystemException("用户名已重复！");
             }
         }
+        User loginUser = ContextUtils.getUser();
+
         if (user.getId() == null) {
-            User loginUser = ContextUtils.getUser();
             Optional.ofNullable(loginUser).orElseThrow(() -> new SystemException("请登录后操作"));
             user.setId(loginUser.getId());
         }
@@ -123,9 +124,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         user.setModifyDate(new Date());
 
         Boolean update = super.update(user);
-       /* if (update) {
+        //如果是当前用户，就更新session
+        if (update && user.getId().equals(loginUser.getId()) ) {
             ContextUtils.setUser(selectOne(user.getId()));
-        }*/
+        }
         return update;
     }
 
