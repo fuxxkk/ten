@@ -141,7 +141,7 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
 
         IPage userItemIPage = mapper.selectPage(userItemPage, userItemQueryWrapper);
         List<UserItem> pageList = userItemIPage.getRecords();
-        Iterable<UserItemDTO> userItemDTOS = Observable.fromIterable(pageList).observeOn(Schedulers.io()).map(x -> {
+        List<UserItemDTO> itemDTOS = Observable.fromIterable(pageList).observeOn(Schedulers.io()).map(x -> {
             Item item = itemService.selectOne(x.getItemId());
             UserItemDTO userItemDTO = new UserItemDTO();
             userItemDTO.setBuyDate(x.getCreateDate());
@@ -151,8 +151,7 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
             Integer s = x.getCurrentDay();
             userItemDTO.setProgress(s + "/" + m);
             return userItemDTO;
-        }).blockingIterable();
-        List<UserItemDTO> itemDTOS = Lists.newArrayList(userItemDTOS);
+        }).toList().blockingGet();
         userItemIPage.setRecords(itemDTOS);
         return userItemIPage;
     }

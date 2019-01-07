@@ -169,10 +169,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         List<User> sons = findSonByUserId(userId);
         if (CollectionUtils.isNotEmpty(sons)) {
 
-            Iterable<UserDTO> userDTOS = Observable.fromIterable(sons).observeOn(Schedulers.io()).map(son -> {
-                return findUserTeamatesDetailByUserId(son.getId());
-            }).blockingIterable();
-            ArrayList<UserDTO> dtos = Lists.newArrayList(userDTOS);
+            List<UserDTO> dtos = Observable.fromIterable(sons).observeOn(Schedulers.io())
+                    .map(son -> findUserTeamatesDetailByUserId(son.getId()))
+                    .toList().blockingGet();
             userDTO.setUsers(dtos);
         }
         Double totalBalance = getTotalBalance(userDTO, 0);
