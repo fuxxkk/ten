@@ -151,10 +151,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         if (StringUtils.isNotEmpty(userPageRequest.getUsername())) {
             userQueryWrapper.like("username", userPageRequest.getUsername());
         }
-        if (userPageRequest.getIsAsc() != null && StringUtils.isNotEmpty(userPageRequest.getOrderByColumn()) ) {
+        if (userPageRequest.getIsAsc() != null && StringUtils.isNotEmpty(userPageRequest.getOrderByColumn())) {
             userQueryWrapper.orderBy(true, userPageRequest.getIsAsc(), userPageRequest.getOrderByColumn());
         }
-        return mapper.selectPage(userPage,userQueryWrapper);
+        return mapper.selectPage(userPage, userQueryWrapper);
     }
 
     @Override
@@ -256,7 +256,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         List<Role> roles = roleService.findByUserId(one.getId());
         boolean flag = true;
         for (Role role : roles) {
-            if (role.getId().equals(1)) {
+            if (role.getId() == 1) {
                 flag = false;
                 break;
             }
