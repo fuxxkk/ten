@@ -1,13 +1,10 @@
 var dom = document.getElementById("meminfo");
 var myChart2 = echarts.init(dom);
-var app = {};
 option = null;
 var base = +new Date();
-var oneDay = 24 * 3600 * 1000;
 var date2 = [];
 
 var data4 = [0];
-var now = new Date();
 var data5 = [0];
 var data6 = [0];
 
@@ -19,36 +16,34 @@ function formatTime(time) {
 }
 
 function addData2(shift) {
-    var hours = now.getHours();
-    var minutes = now.getMinutes();
-    var seconds = now.getSeconds();
-    var nowFormat = [formatTime(hours), formatTime(minutes), formatTime(seconds)].join(':');
 
-    $.get("http://localhost:8080/sys/mem", function (result) {
-        // console.log(data)
-        data4.push(result.totalMem)
-        data5.push(result.freeMem)
-        data6.push(result.usedMem)
-    })
+    if (!shift) {
+        data4.push(0)
+        data5.push(0)
+        data6.push(0)
+        date2.push('')
+    } else {
+        $.get("http://localhost:8080/sys/mem", function (result) {
+            data4.push(result.totalMem)
+            data5.push(result.freeMem)
+            data6.push(result.usedMem)
+            date2.push(result.date)
+        })
+    }
 
-    date2.push(nowFormat);
-    // data.push((Math.random() - 0.4) * 10 + data[data.length - 1]);
-    // data2.push((Math.random() + 0.9) * 2 + data2[data2.length - 1]);
     if (shift) {
         date2.shift();
         data4.shift();
         data5.shift();
         data6.shift();
     }
-    if (shift == null || shift == true) {
-        now = new Date(+new Date(now) + 3000);
-    }
-
 }
 
-for (var i = 1; i < 8; i++) {
-
+for (var i = 1; i <= 30; i++) {
     addData2();
+    if (i > 29) {
+        addData2(true)
+    }
 }
 
 option = {
@@ -108,11 +103,6 @@ option = {
                     color: '#52f71e'
                 }
             },
-            // lineSytle:{
-            //     normal:{
-            //         color: '#162795'
-            //     }
-            // },
 
             data: data5
         },
@@ -150,7 +140,7 @@ var begin = function () {
     });
 }
 $(begin)
-setInterval(begin, 3000);
+setInterval(begin, 2000);
 
 if (option && typeof option === "object") {
     myChart2.setOption(option, true);

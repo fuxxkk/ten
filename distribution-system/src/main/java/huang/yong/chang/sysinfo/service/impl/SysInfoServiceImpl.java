@@ -7,6 +7,9 @@ import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 @Service
 public class SysInfoServiceImpl implements SysInfoService {
@@ -18,6 +21,7 @@ public class SysInfoServiceImpl implements SysInfoService {
         memBean.setFreeMem((int) (r.freeMemory()/1024));
         memBean.setTotalMem((int) (r.totalMemory()/1024));
         memBean.setUsedMem((int) ((r.totalMemory()-r.freeMemory())/1024));
+        memBean.setDate(new SimpleDateFormat("HH:mm:ss").format(new Date()));
         return memBean;
     }
 
@@ -29,6 +33,7 @@ public class SysInfoServiceImpl implements SysInfoService {
         memBean.setFreeMem((int) (mem.getFree()/1024));
         memBean.setTotalMem((int) (mem.getTotal()/1024));
         memBean.setUsedMem((int) ((mem.getUsed())/1024));
+        memBean.setDate(new SimpleDateFormat("HH:mm:ss").format(new Date()));
         return memBean;
     }
 }

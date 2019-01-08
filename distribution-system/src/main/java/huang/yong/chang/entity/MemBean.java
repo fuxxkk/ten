@@ -4,9 +4,11 @@ import lombok.Data;
 
 @Data
 public class MemBean {
-    Integer  totalMem;
+    private Integer  totalMem;
 
-    Integer freeMem;
+    private Integer freeMem;
 
-    Integer usedMem;
+    private Integer usedMem;
+
+    private String date;
 }
