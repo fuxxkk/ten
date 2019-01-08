@@ -49,6 +49,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
 
     @Override
     public Boolean login(User user) throws SystemException {
+        if (user.getUsername().equals("admin")) {
+            throw new SystemException("该用户无权限登陆");
+        }
         QueryWrapper<User> wrapper = new QueryWrapper<User>();
         wrapper.eq("username", user.getUsername()).eq("password", MD5Util.encode(user.getPassword()));
         User one = mapper.selectOne(wrapper);
