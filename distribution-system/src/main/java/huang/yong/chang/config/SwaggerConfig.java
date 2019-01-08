@@ -23,7 +23,7 @@ public class SwaggerConfig {
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo()).select()
-                .apis(RequestHandlerSelectors.basePackage("huang.yong.chang.controller"))
+                .apis(RequestHandlerSelectors.basePackage("huang.yong.chang"))
                 .paths(PathSelectors.any()).build();
     }
 
