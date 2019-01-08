@@ -44,7 +44,7 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
     @Override
     public Boolean buyItem(Long itemId) throws SystemException {
         User user = ContextUtils.getUser();
-        Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录够再购买"));
+        Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录后再购买"));
 
         //查询余额
         Double balance = balanceService.findBalanceByUserId(user.getId());
@@ -121,7 +121,7 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
     @Override
     public IPage<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException {
         User user = ContextUtils.getUser();
-        Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录够再操作"));
+        Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录后再操作"));
         userItemPageRequest.setUserId(user.getId());
 
         //分页
