@@ -1,6 +1,6 @@
 package huang.yong.chang.sysinfo.controller;
 
-import huang.yong.chang.entity.JVMBean;
+import huang.yong.chang.entity.MemBean;
 import huang.yong.chang.sysinfo.service.SysInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +19,13 @@ public class SysInfoController {
 
     @GetMapping("jvm")
     @ApiOperation(value = "获取jvm信息")
-    public JVMBean getJvmInfo() {
+    public MemBean getJvmInfo() {
         return sysInfoService.getJvmInfo();
+    }
+
+    @GetMapping("mem")
+    @ApiOperation(value = "获取内存信息")
+    public MemBean getMemInfo() throws Exception {
+        return sysInfoService.getMemInfo();
     }
 }

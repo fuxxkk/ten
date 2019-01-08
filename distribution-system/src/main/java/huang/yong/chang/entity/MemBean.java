@@ -3,7 +3,7 @@ package huang.yong.chang.entity;
 import lombok.Data;
 
 @Data
-public class JVMBean {
+public class MemBean {
     Integer  totalMem;
 
     Integer freeMem;

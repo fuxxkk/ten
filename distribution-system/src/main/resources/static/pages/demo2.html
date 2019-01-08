@@ -5,8 +5,11 @@
 </head>
 <body style="height: 100%; margin: 0">
 <div id="container" style="height: 400px;width: 100%"></div>
+<div id="meminfo" style="height: 400px;width: 100%"></div>
+
 <script type="text/javascript" src="../js/echarts.min.js"></script>
 <script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/memInfo.js"></script>
 <script type="text/javascript">
     var dom = document.getElementById("container");
     var myChart = echarts.init(dom);
@@ -21,14 +24,18 @@
     var data2 = [Math.random() * 150];
     var data3 = [Math.random() * 150];
 
+    function formatTime(time) {
+        if (time < 10) {
+            return time = '0' + time;
+        }
+        return time;
+    }
+
     function addData(shift) {
         var hours = now.getHours();
         var minutes = now.getMinutes();
         var seconds = now.getSeconds();
-        if (seconds < 10) {
-            seconds = '0' + seconds;
-        }
-        var nowFormat = [hours, minutes, seconds].join(':');
+        var nowFormat = [formatTime(hours), formatTime(minutes), formatTime(seconds)].join(':');
 
         $.get("http://localhost:8080/sys/jvm", function (result) {
             // console.log(data)
@@ -46,7 +53,9 @@
             data2.shift();
             data3.shift();
         }
-        now = new Date(+new Date(now) + 1000);
+        if (shift == null || shift == true) {
+            now = new Date(+new Date(now) + 3000);
+        }
 
     }
 
@@ -56,6 +65,9 @@
     }
 
     option = {
+        legend: {
+            data: ['JVM总内存', 'JVM剩余内存', 'JVM已使用内存']
+        },
         title: {
             text: 'JVM-INFO'
         },
@@ -67,9 +79,6 @@
                     backgroundColor: '#6a7985'
                 }
             }
-        },
-        legend: {
-            data: date
         },
         grid: {
             left: '3%',
@@ -115,8 +124,7 @@
             }
         ]
     };
-
-    setInterval(function () {
+    var begin = function () {
         addData(true);
         myChart.setOption({
             xAxis: {
@@ -125,7 +133,7 @@
             series: [{
                 name: 'JVM总内存(单位：kb）',
                 data: data
-                },
+            },
                 {
                     name: 'JVM剩余内存(单位：kb）',
                     data: data2
@@ -135,8 +143,9 @@
                     data: data3
                 }]
         });
-    }, 1000);
-    ;
+    };
+    $(begin)
+    setInterval(begin, 3000);
     if (option && typeof option === "object") {
         myChart.setOption(option, true);
     }
