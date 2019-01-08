@@ -29,5 +29,5 @@ public interface RechargeService extends BaseService<Recharge> {
      * @param rechargeId
      * @return
      */
-    Boolean setComfirmById(Long rechargeId,Double percent,Double money);
+    Boolean setComfirmById(Long rechargeId,Double percent,Double money) throws SystemException;
 }

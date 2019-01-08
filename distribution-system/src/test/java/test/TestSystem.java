@@ -52,7 +52,7 @@ public class TestSystem {
     }
 
     @Test
-    public void confirm() {
+    public void confirm() throws SystemException {
         //11111111
         long[] ls = {527999423742627840l};
         for (long s :
