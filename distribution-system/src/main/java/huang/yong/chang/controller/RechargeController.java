@@ -27,7 +27,7 @@ public class RechargeController {
 
     @PostMapping("findByUserId")
     @ApiOperation(value = "查询当前用户充值记录(分页查询）")
-    public Result findByUserId(@RequestBody RechargePageRequest rechargePageRequest) {
+    public Result findByUserId(@RequestBody RechargePageRequest rechargePageRequest) throws SystemException {
         return Result.SUCCESS(rechargeService.findByUserId(rechargePageRequest));
     }
 

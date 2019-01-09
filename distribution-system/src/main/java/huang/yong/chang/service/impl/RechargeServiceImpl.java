@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMapper> implements RechargeService {
@@ -80,9 +81,11 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
     }
 
     @Override
-    public IPage<Recharge> findByUserId(RechargePageRequest rechargePageRequest) {
+    public IPage<Recharge> findByUserId(RechargePageRequest rechargePageRequest) throws SystemException {
         if (rechargePageRequest.getUserId() == null) {
-            rechargePageRequest.setUserId(ContextUtils.getUser().getId());
+            User user = ContextUtils.getUser();
+            Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登陆后再查询"));
+            rechargePageRequest.setUserId(user.getId());
         }
         Page<Recharge> rechargePage = new Page<>(rechargePageRequest.getPage(), rechargePageRequest.getPageSize());
         QueryWrapper<Recharge> rechargeQueryWrapper = new QueryWrapper<>();

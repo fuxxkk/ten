@@ -22,7 +22,7 @@ public interface RechargeService extends BaseService<Recharge> {
      * @param rechargePageRequest
      * @return
      */
-    IPage<Recharge> findByUserId(RechargePageRequest rechargePageRequest);
+    IPage<Recharge> findByUserId(RechargePageRequest rechargePageRequest) throws SystemException;
 
     /**
      * 设置成确定充值
