@@ -120,16 +120,20 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
 
     @Override
     public IPage<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException {
-        User user = ContextUtils.getUser();
+      /*  User user = ContextUtils.getUser();
         Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录后再操作"));
         if (userItemPageRequest.getUserId() == null) {
             userItemPageRequest.setUserId(user.getId());
-        }
+        }*/
 
         //分页
         Page<UserItem> userItemPage = new Page<>(userItemPageRequest.getPage(), userItemPageRequest.getPageSize());
         QueryWrapper<UserItem> userItemQueryWrapper = new QueryWrapper<>();
-        userItemQueryWrapper.eq("user_id", userItemPageRequest.getUserId());
+
+        //如果不传id就查全部
+        if (userItemPageRequest.getUserId() != null) {
+            userItemQueryWrapper.eq("user_id", userItemPageRequest.getUserId());
+        }
         if (StringUtils.isNotEmpty(userItemPageRequest.getItemName())) {
             List<Item> items = itemService.findIdsByName(userItemPageRequest.getItemName());
             if (CollectionUtils.isNotEmpty(items)) {
@@ -145,7 +149,9 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         List<UserItem> pageList = userItemIPage.getRecords();
         List<UserItemDTO> itemDTOS = Observable.fromIterable(pageList).observeOn(Schedulers.io()).map(x -> {
             Item item = itemService.selectOne(x.getItemId());
+            User user = userService.selectOne(x.getUserId());
             UserItemDTO userItemDTO = new UserItemDTO();
+            userItemDTO.setUserName(user.getUsername());
             userItemDTO.setBuyDate(x.getCreateDate());
             userItemDTO.setItem(item);
             userItemDTO.setStatus(x.getStatus());

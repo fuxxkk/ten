@@ -9,6 +9,8 @@ import java.util.Date;
 @Data
 public class UserItemDTO {
 
+    private String userName;
+
     private Item item;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
