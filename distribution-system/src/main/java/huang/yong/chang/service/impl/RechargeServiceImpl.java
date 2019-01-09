@@ -87,6 +87,9 @@ public class RechargeServiceImpl extends BaseServiceImpl<Recharge, RechargeMappe
         Page<Recharge> rechargePage = new Page<>(rechargePageRequest.getPage(), rechargePageRequest.getPageSize());
         QueryWrapper<Recharge> rechargeQueryWrapper = new QueryWrapper<>();
         rechargeQueryWrapper.eq("user_id", rechargePageRequest.getUserId());
+        //只显示确认与充值
+        rechargeQueryWrapper.gt("recharge_money", 0);
+        rechargeQueryWrapper.eq("is_confirm", true);
         if (rechargePageRequest.getIsAsc() != null && StringUtils.isNotEmpty(rechargePageRequest.getOrderByColumn()) ) {
             rechargeQueryWrapper.orderBy(true, rechargePageRequest.getIsAsc(), rechargePageRequest.getOrderByColumn());
         }
