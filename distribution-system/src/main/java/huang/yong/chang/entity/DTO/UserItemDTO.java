@@ -1,5 +1,6 @@
 package huang.yong.chang.entity.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import huang.yong.chang.entity.Item;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ public class UserItemDTO {
 
     private Item item;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date buyDate;
 
     private String progress;
