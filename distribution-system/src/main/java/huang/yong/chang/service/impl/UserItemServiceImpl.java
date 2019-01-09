@@ -122,7 +122,9 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
     public IPage<UserItemDTO> findPage(UserItemPageRequest userItemPageRequest) throws SystemException {
         User user = ContextUtils.getUser();
         Optional.ofNullable(user).orElseThrow(() -> new SystemException("请登录后再操作"));
-        userItemPageRequest.setUserId(user.getId());
+        if (userItemPageRequest.getUserId() == null) {
+            userItemPageRequest.setUserId(user.getId());
+        }
 
         //分页
         Page<UserItem> userItemPage = new Page<>(userItemPageRequest.getPage(), userItemPageRequest.getPageSize());
@@ -135,7 +137,7 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
                 userItemQueryWrapper.in("item_id", ids);
             }
         }
-        if (userItemPageRequest.getIsAsc() != null && StringUtils.isNotEmpty(userItemPageRequest.getOrderByColumn()) ) {
+        if (userItemPageRequest.getIsAsc() != null && StringUtils.isNotEmpty(userItemPageRequest.getOrderByColumn())) {
             userItemQueryWrapper.orderBy(true, userItemPageRequest.getIsAsc(), userItemPageRequest.getOrderByColumn());
         }
 
