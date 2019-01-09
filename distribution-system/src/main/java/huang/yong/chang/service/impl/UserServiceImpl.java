@@ -169,7 +169,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
         UserDTO userDTO = new UserDTO();
         userDTO.setAlipayAccount(user.getAlipayAccount());
         userDTO.setCreateDate(user.getCreateDate());
-        userDTO.setAlipayName(user.getAlipayName());
+        userDTO.setAlipayName(user.getUsername());
         userDTO.setBalance(balance);
         List<User> sons = findSonByUserId(userId);
         if (CollectionUtils.isNotEmpty(sons)) {
