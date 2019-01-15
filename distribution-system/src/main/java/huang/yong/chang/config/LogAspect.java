@@ -1,13 +1,11 @@
 package huang.yong.chang.config;
 
+import huang.yong.chang.base.Result;
 import huang.yong.chang.entity.User;
 import huang.yong.chang.util.ContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
@@ -47,9 +45,14 @@ public class LogAspect {
         log.info("用户：{}========httpmethod:"+request.getMethod()+"===="+"method："+name+",args:"+ Arrays.toString(joinPoint.getArgs())+"========",username);
     }
 
-    @After(value = "recordlog()")
-    public void doAfter() {
-        log.info("================total time : {}",System.currentTimeMillis()-startTime.get()+"ms ===============");
+    @AfterReturning(value = "recordlog()",returning = "result")
+    public void doAfter(JoinPoint point,Object result) {
+        long totalTime = System.currentTimeMillis() - startTime.get();
+        if (result instanceof Result) {
+            Result target = (Result)result;
+            target.setTotalTime(totalTime);
+        }
+        log.info("================total time : {}", totalTime +"ms ===============");
     }
 
     /*@Around(value = "recordlog()")

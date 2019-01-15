@@ -20,6 +20,8 @@ public class Result {
 
     private Object data;  //返回数据
 
+    private Long totalTime;//耗时
+
     public final static Result SUCCESS(Object data) {
         return new Result(true, StatusCode.OK, StatusMsg.OK, data);
     }
