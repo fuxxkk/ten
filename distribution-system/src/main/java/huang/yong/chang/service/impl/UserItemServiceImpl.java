@@ -57,8 +57,8 @@ public class UserItemServiceImpl extends BaseServiceImpl<UserItem, UserItemMappe
         QueryWrapper<UserItem> userItemQueryWrapper = new QueryWrapper<>();
         userItemQueryWrapper.eq("user_id", user.getId()).eq("item_id", itemId);
         Integer count = mapper.selectCount(userItemQueryWrapper);
-        if (count >= 2) {
-            throw new SystemException("您不能购买该商品超过2次！");
+        if (count > 0) {
+            throw new SystemException("一人一个产品仅限购买一次!");
         }
 
         //查询用户购买的商品是否在生长周期内
