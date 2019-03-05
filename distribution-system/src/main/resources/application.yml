@@ -15,9 +15,9 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://211.149.136.32:3306/fenxiao?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-      username: fenxiao
-      password: bPhN2xSRRPRPXhzA
+      url: jdbc:mysql://23.234.53.46:3306/fenxiao?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123456
   redis:
     host: localhost
     port: 6379
